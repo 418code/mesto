@@ -1,0 +1,9 @@
+@import url(../vendor/normalize.css);
+@import url(../vendor/fonts/fonts.css);
+
+/* body block */
+@import url(../blocks/body/body.css);
+@import url(../blocks/body/__element/body__element.css);
+
+ /* page block */
+@import url(../blocks/page/page.css);
