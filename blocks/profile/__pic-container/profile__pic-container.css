@@ -1,0 +1,21 @@
+.profile__pic-container {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  width: 168.75px;
+  height: 127.5px;
+  margin-bottom: 22.25px;
+}
+
+.profile__pic-container::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  border: 100px solid #000;
+}

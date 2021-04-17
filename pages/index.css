@@ -1,6 +1,11 @@
 @import url(../vendor/normalize.css);
 @import url(../vendor/fonts/fonts.css);
 
+/* mix-ins */
+@import url(../blocks/transparent/transparent.css);
+@import url(../blocks/transparent/_amount_less/transparent_amount_less.css);
+@import url(../blocks/transparent/_amount_more/transparent_amount_more.css);
+
 /* body block */
 @import url(../blocks/body/body.css);
 @import url(../blocks/body/__element/body__element.css);
@@ -11,3 +16,18 @@
  /* header section */
 @import url(../blocks/header/header.css);
 @import url(../blocks/header/__logo/header__logo.css);
+
+/* main section */
+@import url(../blocks/content/content.css);
+
+/* profile section */
+@import url(../blocks/profile/profile.css);
+@import url(../blocks/profile/__figure/profile__figure.css);
+@import url(../blocks/profile/__pic-container/profile__pic-container.css);
+@import url(../blocks/profile/__pic/profile__pic.css);
+@import url(../blocks/profile/__info/profile__info.css);
+@import url(../blocks/profile/__name-edit-wrap/profile__name-edit-wrap.css);
+@import url(../blocks/profile/__name/profile__name.css);
+@import url(../blocks/profile/__edit-button/profile__edit-button.css);
+@import url(../blocks/profile/__description/profile__description.css);
+@import url(../blocks/profile/__add-button/profile__add-button.css);
