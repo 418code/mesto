@@ -31,3 +31,13 @@
 @import url(../blocks/profile/__edit-button/profile__edit-button.css);
 @import url(../blocks/profile/__description/profile__description.css);
 @import url(../blocks/profile/__add-button/profile__add-button.css);
+
+/* places section */
+@import url(../blocks/places/places.css);
+
+/* place block */
+@import url(../blocks/place/place.css);
+@import url(../blocks/place/__photo/place__photo.css);
+@import url(../blocks/place/__name-like-container/place__name-like-container.css);
+@import url(../blocks/place/__name/place__name.css);
+@import url(../blocks/place/__like/place__like.css);

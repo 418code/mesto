@@ -1,0 +1,8 @@
+.place__name-like-container {
+  width: 246px;
+  height: 23px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 31px;
+}
