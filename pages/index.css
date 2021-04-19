@@ -5,6 +5,7 @@
 @import url(../blocks/transparent/transparent.css);
 @import url(../blocks/transparent/_amount_less/transparent_amount_less.css);
 @import url(../blocks/transparent/_amount_more/transparent_amount_more.css);
+@import url(../blocks/transparent/_amount_much-more/transparent_amount_much-more.css);
 
 /* body block */
 @import url(../blocks/body/body.css);
@@ -45,3 +46,12 @@
 /* footer section */
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
+
+/* overlay section */
+@import url(../blocks/overlay/overlay.css);
+@import url(../blocks/overlay/__form/overlay__form.css);
+@import url(../blocks/overlay/__form-close-btn/overlay__form-close-btn.css);
+@import url(../blocks/overlay/__form-title/overlay__form-title.css);
+@import url(../blocks/overlay/__form-text/overlay__form-text.css);
+@import url(../blocks/overlay/__form-save-btn/overlay__form-save-btn.css);
+@import url(../blocks/overlay/__form-container/overlay__form-container.css);

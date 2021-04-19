@@ -1,0 +1,14 @@
+.overlay__form-close-btn {
+  padding: 0;
+  margin: 0;
+  width: 38px;
+  height: 38px;
+  border: none;
+  outline: none;
+  background-color: #000;
+  background: no-repeat center url(../../../images/x_close_button.svg);
+  position: absolute;
+  top: -50px;
+  right: 0;
+  cursor: pointer;
+}

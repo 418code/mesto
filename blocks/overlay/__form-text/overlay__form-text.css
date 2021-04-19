@@ -1,0 +1,17 @@
+.overlay__form-text {
+  width: 100%;
+  height: 27px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-bottom: 1px solid #000;
+  outline: none;
+  font-size: 14px;
+  line-height: 16.94px;
+  padding-bottom: 3px;
+  margin-bottom: 26px;
+}
+
+.overlay__form-text:last-of-type {
+  margin-bottom: 44px;
+}
