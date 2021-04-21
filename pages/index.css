@@ -5,6 +5,7 @@
 @import url(../blocks/transparent/transparent.css);
 @import url(../blocks/transparent/_amount_less/transparent_amount_less.css);
 @import url(../blocks/transparent/_amount_more/transparent_amount_more.css);
+@import url(../blocks/transparent/_amount_much-more/transparent_amount_much-more.css);
 
 /* body block */
 @import url(../blocks/body/body.css);
@@ -45,3 +46,13 @@
 /* footer section */
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
+
+/* popup section */
+@import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/_opened/popup_opened.css);
+@import url(../blocks/popup/__container/popup__container.css);
+@import url(../blocks/popup/__container-close-btn/popup__container-close-btn.css);
+@import url(../blocks/popup/__container-title/popup__container-title.css);
+@import url(../blocks/popup/__container-text/popup__container-text.css);
+@import url(../blocks/popup/__container-save-btn/popup__container-save-btn.css);
+@import url(../blocks/popup/__container-panel/popup__container-panel.css);
