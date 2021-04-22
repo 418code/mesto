@@ -7,3 +7,11 @@
   font-weight: normal;
   text-align: center;
 }
+
+@media (min-width: 768px) {
+  .profile__description {
+    font-size: 18px;
+    line-height: 21.78px;
+    text-align: left;
+  }
+}

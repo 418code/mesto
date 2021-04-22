@@ -11,3 +11,12 @@
   max-width: 282px;
   padding-bottom: 36px;
 }
+
+@media (min-width: 768px) {
+  .profile {
+    max-width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 24px;
+  }
+}

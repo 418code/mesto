@@ -11,3 +11,18 @@
   outline: none;
   cursor: pointer;
 }
+
+@media (min-width: 768px) {
+  .profile__add-button {
+    width: 150px;
+    height: 50px;
+    background-size: 22px 22px;
+    margin-right: 27px;
+  }
+}
+
+@media (min-width: 925px) {
+  .profile__add-button {
+    margin: 0;
+  }
+}
