@@ -1,9 +1,22 @@
 .places__list {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-  max-width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(282px, 1fr));
+  gap: 20px 17px;
+  justify-items: center;
+  width: 100%;
   padding: 0 0 48px;
   margin: 0;
   list-style-type: none;
+}
+
+@media (min-width: 768px) {
+  .places__list {
+    padding: 0 27px 66px;
+  }
+}
+
+@media (min-width: 925px) {
+  .places__list {
+    padding: 0 0 66px;
+  }
 }
