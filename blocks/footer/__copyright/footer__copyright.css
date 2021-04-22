@@ -6,3 +6,10 @@
   color: #545454;
   padding-bottom: 36px;
 }
+
+@media (min-width: 768px) {
+  .footer__copyright {
+    font-size: 18px;
+    line-height: 21.78px;
+  }
+}
