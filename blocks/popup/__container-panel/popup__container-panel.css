@@ -1,4 +1,10 @@
 .popup__container-panel {
-  width: 238px;
+  max-width: 100%;
   padding: 25px 22px;
+}
+
+@media (min-width: 530px) {
+  .popup__container-panel {
+    padding: 34px 36px 37px;
+  }
 }

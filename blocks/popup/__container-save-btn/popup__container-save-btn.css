@@ -10,3 +10,10 @@
   width: 100%;
   cursor: pointer;
 }
+
+@media (min-width: 530px) {
+  .popup__container-save-btn {
+    font-size: 18px;
+    line-height: 21.78px;
+  }
+}

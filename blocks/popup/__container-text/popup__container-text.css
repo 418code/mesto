@@ -15,3 +15,9 @@
 .popup__container-text:last-of-type {
   margin-bottom: 44px;
 }
+
+@media (min-width: 530px) {
+  .popup__container-text:last-of-type {
+    margin-bottom: 48px;
+  }
+}
