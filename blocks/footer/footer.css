@@ -7,4 +7,11 @@
   -moz-text-size-adjust: 100%;
   display: flex;
   justify-content: start;
+  width: 88%;
+}
+
+@media (min-width: 925px) {
+  .footer {
+    width: 100%;
+  }
 }
