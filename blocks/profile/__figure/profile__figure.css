@@ -5,3 +5,10 @@
   margin: 0;
   padding: 0;
 }
+
+@media (min-width: 768px) {
+  .profile__figure {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
