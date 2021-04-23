@@ -3,9 +3,9 @@
 
 /* mix-ins */
 @import url(../blocks/transparent/transparent.css);
-@import url(../blocks/transparent/_amount_less/transparent_amount_less.css);
-@import url(../blocks/transparent/_amount_more/transparent_amount_more.css);
-@import url(../blocks/transparent/_amount_much-more/transparent_amount_much-more.css);
+@import url(../blocks/transparent/_amount/transparent_amount_less.css);
+@import url(../blocks/transparent/_amount/transparent_amount_more.css);
+@import url(../blocks/transparent/_amount/transparent_amount_much-more.css);
 
 /* body block */
 @import url(../blocks/body/body.css);
