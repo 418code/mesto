@@ -80,18 +80,17 @@
     <footer class="footer body__element">
       <p class="footer__copyright">&copy; 2021 Максим Толстокорый</p>
     </footer>
-    <div class="popup">
-      <form class="popup__container">
+    <div class="popup" id="editProfile">
+      <div class="popup__container">
         <button class="popup__container-close-btn transparent transparent_amount_more" type="button"></button>
-        <div class="popup__container-panel">
-          <p class="popup__container-title">Редактировать профиль</p>
-          <input type="text" class="popup__container-text" placeholder="Жак-Ив Кусто">
-          <input type="text" class="popup__container-text" placeholder="Исследователь океана">
-          <button class="popup__container-save-btn transparent transparent_amount_much-more" type="submit">Сохранить</button>
-        </div>
-      </form>
+        <form name="editProfile" class="popup__form">
+          <h2 class="popup__form-title">Редактировать профиль</h2>
+          <input type="text" name="profileName" class="popup__form-text" placeholder="Жак-Ив Кусто">
+          <input type="text" name="profileDescription" class="popup__form-text" placeholder="Исследователь океана">
+          <button class="popup__form-save-btn transparent transparent_amount_much-more" type="submit">Сохранить</button>
+        </form>
+      </div>
     </div>
-  </div>
   <script src="./scripts/code.js"></script>
 </body>
 </html>

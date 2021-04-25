@@ -1,11 +1,15 @@
 .profile__description {
   font-size: 14px;
   line-height: 16.94px;
-  width: 100%;
+  width: 88%;
   margin: 0;
   padding: 0;
   font-weight: normal;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 336px;
 }
 
 @media (min-width: 768px) {

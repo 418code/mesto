@@ -1,10 +1,10 @@
-.popup__container-panel {
+.popup__form {
   max-width: 100%;
   padding: 25px 22px;
 }
 
 @media (min-width: 530px) {
-  .popup__container-panel {
+  .popup__form {
     padding: 34px 36px 37px;
   }
 }

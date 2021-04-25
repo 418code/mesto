@@ -1,4 +1,4 @@
-.popup__container-save-btn {
+.popup__form-save-btn {
   border: none;
   outline: none;
   border-radius: 2px;
@@ -12,7 +12,7 @@
 }
 
 @media (min-width: 530px) {
-  .popup__container-save-btn {
+  .popup__form-save-btn {
     font-size: 18px;
     line-height: 21.78px;
   }
