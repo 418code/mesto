@@ -23,7 +23,7 @@
 
 /* profile section */
 @import url(../blocks/profile/profile.css);
-@import url(../blocks/profile/__figure/profile__figure.css);
+@import url(../blocks/profile/__pic-info-container/profile__pic-info-container.css);
 @import url(../blocks/profile/__pic-container/profile__pic-container.css);
 @import url(../blocks/profile/__pic/profile__pic.css);
 @import url(../blocks/profile/__info/profile__info.css);
