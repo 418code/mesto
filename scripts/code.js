@@ -31,7 +31,7 @@ function togglePopup(popup) {
 }
 
 //handles form logic inside popup
-function formPopupProcessor(popup, formSubmitAction, getValues) {
+function formPopupProcessor(popup, formSubmitAction, getValues = () => ["",""]) {
   const topInput = popup.querySelectorAll('.popup__form-text')[0];
   const bottomInput = popup.querySelectorAll('.popup__form-text')[1];
 
@@ -82,13 +82,7 @@ function profileEditPopupProcessor(popup) {
 }
 
 function profileAddPopupProcessor(popup) {
-
-  //placeholder getValues to be changed to optional on refactor
-  function getValues() {
-    return ["",""];
-  }
-
-  return formPopupProcessor(popup, createPlaceCard, getValues);
+  return formPopupProcessor(popup, createPlaceCard);
 }
 
 //handles popup logic
