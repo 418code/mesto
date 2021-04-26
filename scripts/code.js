@@ -109,11 +109,16 @@ function popupInit(popupId, openButton, customPopupProcessor) {
     let placesList = document.querySelector('.places__list');
     let newPlaceCard = document.createElement('li');
     newPlaceCard.classList.add('place');
-    newPlaceCard.innerHTML = `<img src="${imageUrl}" alt="изображение ${placeName}" class="place__photo">
+    newPlaceCard.innerHTML = `<button class="place__remove-btn transparent transparent_amount_more" type="button"></button>
+    <img src="${imageUrl}" alt="изображение ${placeName}" class="place__photo">
     <div class="place__name-like-container">
       <h2 class="place__name">${placeName}</h2>
       <button class="place__like transparent transparent_amount_less" type="button"></button>
     </div>`
+
+    const deleteButton = newPlaceCard.querySelector('.place__remove-btn');
+    deleteButton.addEventListener('click', () => newPlaceCard.remove());
+
     if (position === 'first')
       placesList.prepend(newPlaceCard);
     else if (position === 'last')

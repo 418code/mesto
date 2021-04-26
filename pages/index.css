@@ -39,6 +39,7 @@
 
 /* place block */
 @import url(../blocks/place/place.css);
+@import url(../blocks/place/__remove-btn/place__remove-btn.css);
 @import url(../blocks/place/__photo/place__photo.css);
 @import url(../blocks/place/__name-like-container/place__name-like-container.css);
 @import url(../blocks/place/__name/place__name.css);
