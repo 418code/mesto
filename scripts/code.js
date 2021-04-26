@@ -81,6 +81,16 @@ function profileEditPopupProcessor(popup) {
   return formPopupProcessor(popup, editProfile, getValues);
 }
 
+function profileAddPopupProcessor(popup) {
+
+  //placeholder getValues to be changed to optional on refactor
+  function getValues() {
+    return ["",""];
+  }
+
+  return formPopupProcessor(popup, createPlaceCard, getValues);
+}
+
 //handles popup logic
 function popupInit(popupId, openButton, customPopupProcessor) {
   const popup = document.querySelector(popupId);
@@ -100,18 +110,21 @@ function popupInit(popupId, openButton, customPopupProcessor) {
  * @param {string} position - first || last
  */
  function createPlaceCard(placeName, imageUrl, position = 'first') {
-  let placesList = document.querySelector('.places__list');
-  let newPlaceCard = document.createElement('li');
-  newPlaceCard.classList.add('place');
-  newPlaceCard.innerHTML = `<img src="${imageUrl}" alt="изображение ${placeName}" class="place__photo">
-  <div class="place__name-like-container">
-    <h2 class="place__name">${placeName}</h2>
-    <button class="place__like transparent transparent_amount_less" type="button"></button>
-  </div>`
-  if (position === 'first')
-    placesList.prepend(newPlaceCard);
-  else if (position === 'last')
-    placesList.append(newPlaceCard);
+  //check if fields aren't empty
+  if (placeName && imageUrl && (position === 'first' || position === 'last')) {
+    let placesList = document.querySelector('.places__list');
+    let newPlaceCard = document.createElement('li');
+    newPlaceCard.classList.add('place');
+    newPlaceCard.innerHTML = `<img src="${imageUrl}" alt="изображение ${placeName}" class="place__photo">
+    <div class="place__name-like-container">
+      <h2 class="place__name">${placeName}</h2>
+      <button class="place__like transparent transparent_amount_less" type="button"></button>
+    </div>`
+    if (position === 'first')
+      placesList.prepend(newPlaceCard);
+    else if (position === 'last')
+      placesList.append(newPlaceCard);
+  }
 }
 
 /**
@@ -127,10 +140,14 @@ function createCardsFromArray(arr, position = 'first') {
  * Initializes the page on load
  */
 function pageInit() {
+  //display initial cards
+  createCardsFromArray(initialCards, 'last');
+
   //get the popup open button
   const profileEditButton = document.querySelector('.profile__edit-button');
   popupInit('#editProfile', profileEditButton, profileEditPopupProcessor);
 
-  //display initial cards
-  createCardsFromArray(initialCards, 'last');
+  //get handler for card add button
+  const profileAddButton = document.querySelector('.profile__add-button');
+  popupInit('#addPlace', profileAddButton, profileAddPopupProcessor);
 }
