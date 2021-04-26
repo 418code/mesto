@@ -1,3 +1,29 @@
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
 
 //opens or closes popup
 function togglePopup(popup) {
@@ -67,6 +93,44 @@ function popupInit(popupId, openButton, customPopupProcessor) {
   openButton.addEventListener('click', customPopupProcessor(popup));
 }
 
-//get the popup open button
-const profileEditButton = document.querySelector('.profile__edit-button');
-popupInit('#editProfile', profileEditButton, profileEditPopupProcessor);
+/**
+ * Creates a new place card
+ * @param {string} placeName - name
+ * @param {string} imageUrl - url
+ * @param {string} position - first || last
+ */
+ function createPlaceCard(placeName, imageUrl, position = 'first') {
+  let placesList = document.querySelector('.places__list');
+  let newPlaceCard = document.createElement('li');
+  newPlaceCard.classList.add('place');
+  newPlaceCard.innerHTML = `<img src="${imageUrl}" alt="изображение ${placeName}" class="place__photo">
+  <div class="place__name-like-container">
+    <h2 class="place__name">${placeName}</h2>
+    <button class="place__like transparent transparent_amount_less" type="button"></button>
+  </div>`
+  if (position === 'first')
+    placesList.prepend(newPlaceCard);
+  else if (position === 'last')
+    placesList.append(newPlaceCard);
+}
+
+/**
+ * Generates set of cards from an array
+ * @param {Array} arr - Array of {name: '', link: ''} pairs
+ * @param {string} position - 'first' || 'last'
+ */
+function createCardsFromArray(arr, position = 'first') {
+  arr.forEach(item => createPlaceCard(item.name, item.link, position));
+}
+
+/**
+ * Initializes the page on load
+ */
+function pageInit() {
+  //get the popup open button
+  const profileEditButton = document.querySelector('.profile__edit-button');
+  popupInit('#editProfile', profileEditButton, profileEditPopupProcessor);
+
+  //display initial cards
+  createCardsFromArray(initialCards, 'last');
+}
