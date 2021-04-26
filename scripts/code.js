@@ -113,11 +113,14 @@ function popupInit(popupId, openButton, customPopupProcessor) {
     <img src="${imageUrl}" alt="изображение ${placeName}" class="place__photo">
     <div class="place__name-like-container">
       <h2 class="place__name">${placeName}</h2>
-      <button class="place__like transparent transparent_amount_less" type="button"></button>
+      <button class="place__like-btn transparent transparent_amount_less" type="button"></button>
     </div>`
 
     const deleteButton = newPlaceCard.querySelector('.place__remove-btn');
     deleteButton.addEventListener('click', () => newPlaceCard.remove());
+
+    const likeButton = newPlaceCard.querySelector('.place__like-btn');
+    likeButton.addEventListener('click', () => likeButton.classList.toggle('place__like-btn_selected'));
 
     if (position === 'first')
       placesList.prepend(newPlaceCard);
