@@ -82,7 +82,7 @@ function profileEditPopupProcessor(popup) {
 }
 
 function profileAddPopupProcessor(popup) {
-  return formPopupProcessor(popup, createPlaceCard);
+  return formPopupProcessor(popup, (cardName, urlLink) => addPlaceCard(createPlaceCard(cardName, urlLink)));
 }
 
 //handles popup logic
@@ -98,44 +98,75 @@ function popupInit(popupId, openButton, customPopupProcessor) {
 }
 
 /**
- * Creates a new place card
- * @param {string} placeName - name
- * @param {string} imageUrl - url
- * @param {string} position - first || last
+ * Applies attributes to an element from an array of attribute objects
+ * @param {HTMLElement} element
+ * @param {Array} attributes - [{attr1: 'value1}, {attr2: 'value2'}]
  */
- function createPlaceCard(placeName, imageUrl, position = 'first') {
-  //check if fields aren't empty
-  if (placeName && imageUrl && (position === 'first' || position === 'last')) {
-    let placesList = document.querySelector('.places__list');
-    let newPlaceCard = document.createElement('li');
-    newPlaceCard.classList.add('place');
-    newPlaceCard.innerHTML = `<button class="place__remove-btn transparent transparent_amount_more" type="button"></button>
-    <img src="${imageUrl}" alt="изображение ${placeName}" class="place__photo">
-    <div class="place__name-like-container">
-      <h2 class="place__name">${placeName}</h2>
-      <button class="place__like-btn transparent transparent_amount_less" type="button"></button>
-    </div>`
-
-    const deleteButton = newPlaceCard.querySelector('.place__remove-btn');
-    deleteButton.addEventListener('click', () => newPlaceCard.remove());
-
-    const likeButton = newPlaceCard.querySelector('.place__like-btn');
-    likeButton.addEventListener('click', () => likeButton.classList.toggle('place__like-btn_selected'));
-
-    if (position === 'first')
-      placesList.prepend(newPlaceCard);
-    else if (position === 'last')
-      placesList.append(newPlaceCard);
+ function setElementAttributes(element, attributes) {
+  if (attributes.length > 0) {
+    attributes.forEach(attr => {
+      const key = Object.keys(attr)[0];
+      const value = attr[key];
+      element.setAttribute(key, value);
+    });
   }
 }
 
 /**
- * Generates set of cards from an array
+ * Creates a new place card
+ * @param {string} placeName - name
+ * @param {string} imageUrl - url
+ * @returns {HTMLElement} HTMLElement place card
+ */
+ function createPlaceCard(placeNameText, imageUrl) {
+  const placeCardTemplate = document.querySelector('#placeCardTemplate').content;
+  const newPlaceCard = placeCardTemplate.querySelector('.place').cloneNode(true);
+
+  const placePhoto = newPlaceCard.querySelector('.place__photo');
+  setElementAttributes(placePhoto, [{src: imageUrl}, {alt: `фото ${placeNameText}`}]);
+
+  const placeName = newPlaceCard.querySelector('.place__name');
+  placeName.textContent = `${placeNameText}`;
+
+  const deleteButton = newPlaceCard.querySelector('.place__remove-btn');
+  const likeButton = newPlaceCard.querySelector('.place__like-btn');
+
+  deleteButton.addEventListener('click', (evt) => evt.target.parentElement.remove());
+  likeButton.addEventListener('click', (evt) => evt.target.classList.toggle('place__like-btn_selected'));
+
+  return newPlaceCard;
+}
+
+/**
+ * Prepends or appends childElement to parentElement
+ * @param {HTMLElement} parentElement
+ * @param {HTMLElement} childElement
+ * @param {string} position 'first' == prepend, 'last' == append
+ */
+function appendElementCustom(parentElement, childElement, position = 'first') {
+  if (position === 'first')
+    parentElement.prepend(childElement);
+  else if (position === 'last')
+    parentElement.append(childElement);
+}
+
+/**
+ * Adds a place card to places list
+ * @param {HTMLElement} placeCard
+ * @param {string} position - 'first' || 'last'
+ */
+function addPlaceCard(placeCard, position = 'first') {
+  const placesList = document.querySelector('.places__list');
+  appendElementCustom(placesList, placeCard, position);
+}
+
+/**
+ * Adds a set of cards to the page from a cards array
  * @param {Array} arr - Array of {name: '', link: ''} pairs
  * @param {string} position - 'first' || 'last'
  */
 function createCardsFromArray(arr, position = 'first') {
-  arr.forEach(item => createPlaceCard(item.name, item.link, position));
+  arr.forEach(item => addPlaceCard(createPlaceCard(item.name, item.link), position));
 }
 
 /**
