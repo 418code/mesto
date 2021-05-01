@@ -85,16 +85,44 @@ function profileAddPopupProcessor(popup) {
   return formPopupProcessor(popup, (cardName, urlLink) => addPlaceCard(createPlaceCard(cardName, urlLink)));
 }
 
-//handles popup logic
+/**
+ * Prepares photo popup
+ * @param {HTMLElement} popup
+ * @param {Array} attributes - [{src: 'imageUrl'}, {alt: 'photo text description'}]
+ * @param {string} photoDescription
+ * @returns {function} photo onclick callback
+ */
+function showPhotoPopupProcessor(popup, attributes = [{src: ''}, {alt: ''}], photoDescription = '') {
+  const popupPhoto = popup.querySelector('.popup__photo');
+  const popupPhotoDescription = popup.querySelector('.popup__photo-description');
+  //photo onclick callback
+  return () => {
+    setElementAttributes(popupPhoto, attributes);
+    popupPhotoDescription.textContent = photoDescription;
+    togglePopup(popup)
+  };
+}
+
+/**
+ * Prepares a popup for use
+ * @param {string} popupId
+ * @param {HTMLElement} openButton
+ * @param {function} customPopupProcessor
+ * @returns {HTMLElement} popup
+ */
 function popupInit(popupId, openButton, customPopupProcessor) {
   const popup = document.querySelector(popupId);
 
-  //close the popup with X
+  //close the popup with X, only 1 event listener
   const closeButton = popup.querySelector('.popup__container-close-btn');
-  closeButton.addEventListener('click', () => {togglePopup(popup)});
+  if (!closeButton.onclick)
+    closeButton.onclick = () => togglePopup(popup);
 
-  //open popup with openButton
-  openButton.addEventListener('click', customPopupProcessor(popup));
+  //open popup with openButton, only 1 action per button
+  if (!openButton.onclick)
+    openButton.onclick = customPopupProcessor(popup);
+
+  return popup;
 }
 
 /**
@@ -123,7 +151,8 @@ function popupInit(popupId, openButton, customPopupProcessor) {
   const newPlaceCard = placeCardTemplate.querySelector('.place').cloneNode(true);
 
   const placePhoto = newPlaceCard.querySelector('.place__photo');
-  setElementAttributes(placePhoto, [{src: imageUrl}, {alt: `фото ${placeNameText}`}]);
+  const photoAttributes = [{src: imageUrl}, {alt: `фото ${placeNameText}`}];
+  setElementAttributes(placePhoto, photoAttributes);
 
   const placeName = newPlaceCard.querySelector('.place__name');
   placeName.textContent = `${placeNameText}`;
@@ -133,6 +162,9 @@ function popupInit(popupId, openButton, customPopupProcessor) {
 
   deleteButton.addEventListener('click', (evt) => evt.target.parentElement.remove());
   likeButton.addEventListener('click', (evt) => evt.target.classList.toggle('place__like-btn_selected'));
+
+  //popup open button -> placePhoto
+  const popup = popupInit('#showPhoto', placePhoto, (popup) => showPhotoPopupProcessor(popup, photoAttributes, `${placeNameText}`));
 
   return newPlaceCard;
 }
@@ -178,9 +210,9 @@ function pageInit() {
 
   //get the popup open button
   const profileEditButton = document.querySelector('.profile__edit-button');
-  popupInit('#editProfile', profileEditButton, profileEditPopupProcessor);
+  const profileEditPopup = popupInit('#editProfile', profileEditButton, profileEditPopupProcessor);
 
   //get handler for card add button
   const profileAddButton = document.querySelector('.profile__add-button');
-  popupInit('#addPlace', profileAddButton, profileAddPopupProcessor);
+  const profileAddPopup = popupInit('#addPlace', profileAddButton, profileAddPopupProcessor);
 }

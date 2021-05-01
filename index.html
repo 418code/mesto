@@ -38,7 +38,7 @@
     <footer class="footer body__element">
       <p class="footer__copyright">&copy; 2021 Максим Толстокорый</p>
     </footer>
-    <div class="popup" id="editProfile">
+    <div class="popup popup_transparent_amount_medium" id="editProfile">
       <div class="popup__container">
         <button class="popup__container-close-btn transparent transparent_amount_more" type="button"></button>
         <form name="editProfile" class="popup__form">
@@ -49,7 +49,7 @@
         </form>
       </div>
     </div>
-    <div class="popup" id="addPlace">
+    <div class="popup popup_transparent_amount_medium" id="addPlace">
       <div class="popup__container">
         <button class="popup__container-close-btn transparent transparent_amount_more" type="button"></button>
         <form name="editProfile" class="popup__form">
@@ -58,6 +58,13 @@
           <input type="text" name="profileDescription" class="popup__form-text" placeholder="Ссылка на картинку">
           <button class="popup__form-save-btn transparent transparent_amount_much-more" type="submit">Создать</button>
         </form>
+      </div>
+    </div>
+    <div class="popup popup_transparent_amount_low" id="showPhoto">
+      <div class="popup__container">
+        <button class="popup__container-close-btn transparent transparent_amount_more" type="button"></button>
+        <img src="#" alt="#" class="popup__photo">
+        <p class="popup__photo-description"></p>
       </div>
     </div>
   </div>
