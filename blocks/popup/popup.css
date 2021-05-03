@@ -8,11 +8,14 @@
   background-color: rgba(0,0,0, 0.5);
   width: 100%;
   height: 100%;
-  display: none;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: fixed;
   top: 0;
   z-index: 42;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .5s, visibility 0s .5s;
 }
