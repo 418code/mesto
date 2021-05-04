@@ -54,8 +54,8 @@
 
 /* popup section */
 @import url(../blocks/popup/popup.css);
-@import url(../blocks/popup/_transparent/popup_transparent_amount_low.css);
-@import url(../blocks/popup/_transparent/popup_transparent_amount_medium.css);
+@import url(../blocks/popup/_transparent/popup_transparent_sligthly.css);
+@import url(../blocks/popup/_transparent/popup_transparent_medium.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__container-close-btn/popup__container-close-btn.css);
