@@ -31,7 +31,7 @@ function togglePopup(popup) {
 }
 
 //handles form logic inside popup
-function formPopupProcessor(popup, formSubmitAction, getValues = () => ["",""]) {
+function processFormPopup(popup, useFormInput, getValues = () => ["",""]) {
   const topInput = popup.querySelectorAll('.popup__form-text')[0];
   const bottomInput = popup.querySelectorAll('.popup__form-text')[1];
 
@@ -45,26 +45,26 @@ function formPopupProcessor(popup, formSubmitAction, getValues = () => ["",""]) 
   }
 
   //form submit button callback
-  function customFormSubmit(evt) {
+  function submitFormCustom(evt) {
     evt.preventDefault();
-    formSubmitAction(topInput.value, bottomInput.value);
+    useFormInput(topInput.value, bottomInput.value);
     togglePopup(popup);
   }
 
   //form save button
   const popupForm = popup.querySelector('.popup__form');
-  popupForm.addEventListener('submit', customFormSubmit);
+  popupForm.addEventListener('submit', submitFormCustom);
 
   //send back custom open button handler
   return presentFormPopup;
 }
 
 //handles profile edit logic indside popup
-function profileEditPopupProcessor(popup) {
+function processProfileEditPopup(popup) {
   let profileName = document.querySelector('.profile__name');
   let profileDescription = document.querySelector('.profile__description');
 
-  //formSubmitAction callback
+  //useFormInput callback
   function editProfile(profileNameNew, profileDescriptionNew) {
     if (profileName !== "")
       profileName.textContent = profileNameNew;
@@ -78,11 +78,11 @@ function profileEditPopupProcessor(popup) {
   }
 
   //send the open button handler back
-  return formPopupProcessor(popup, editProfile, getValues);
+  return processFormPopup(popup, editProfile, getValues);
 }
 
-function profileAddPopupProcessor(popup) {
-  return formPopupProcessor(popup, (cardName, urlLink) => addPlaceCard(cardName, urlLink));
+function processProfileAddPopup(popup) {
+  return processFormPopup(popup, (cardName, urlLink) => addPlaceCard(cardName, urlLink));
 }
 
 /**
@@ -92,7 +92,7 @@ function profileAddPopupProcessor(popup) {
  * @param {string} photoDescription
  * @returns {function} photo onclick callback
  */
-function showPhotoPopupProcessor(popup, attributes = [{src: ''}, {alt: ''}], photoDescription = '') {
+function processShowPhotoPopup(popup, attributes = [{src: ''}, {alt: ''}], photoDescription = '') {
   const popupPhoto = popup.querySelector('.popup__photo');
   const popupPhotoDescription = popup.querySelector('.popup__photo-description');
   //photo onclick callback
@@ -107,10 +107,10 @@ function showPhotoPopupProcessor(popup, attributes = [{src: ''}, {alt: ''}], pho
  * Prepares a popup for use
  * @param {string} popupId
  * @param {HTMLElement} openButton
- * @param {function} customPopupProcessor
+ * @param {function} processPopupCustom
  * @returns {HTMLElement} popup
  */
-function popupInit(popupId, openButton, customPopupProcessor) {
+function initPopup(popupId, openButton, processPopupCustom) {
   const popup = document.querySelector(popupId);
 
   //close the popup with X, only 1 event listener
@@ -120,7 +120,7 @@ function popupInit(popupId, openButton, customPopupProcessor) {
 
   //open popup with openButton, only 1 action per button
   if (!openButton.onclick)
-    openButton.onclick = customPopupProcessor(popup);
+    openButton.onclick = processPopupCustom(popup);
 
   return popup;
 }
@@ -173,7 +173,7 @@ function getCardFromTemplate() {
   likeButton.addEventListener('click', (evt) => evt.target.classList.toggle('place__like-btn_selected'));
 
   //popup open button -> placePhoto
-  const popup = popupInit('#showPhoto', placePhoto, (popup) => showPhotoPopupProcessor(popup, photoAttributes, `${placeNameText}`));
+  const popup = initPopup('#showPhoto', placePhoto, (popup) => processShowPhotoPopup(popup, photoAttributes, `${placeNameText}`));
 
   return newPlaceCard;
 }
@@ -232,15 +232,15 @@ function addPlaceCardMulti(arr, position = 'first', reverse = false) {
 /**
  * Initializes the page on load
  */
-function pageInit() {
+function initPage() {
   //display initial cards
   addPlaceCardMulti(initialCards);
 
   //get the popup open button
   const profileEditButton = document.querySelector('.profile__edit-button');
-  const profileEditPopup = popupInit('#editProfile', profileEditButton, profileEditPopupProcessor);
+  const profileEditPopup = initPopup('#editProfile', profileEditButton, processProfileEditPopup);
 
   //get handler for card add button
   const profileAddButton = document.querySelector('.profile__add-button');
-  const profileAddPopup = popupInit('#addPlace', profileAddButton, profileAddPopupProcessor);
+  const profileAddPopup = initPopup('#addPlace', profileAddButton, processProfileAddPopup);
 }
