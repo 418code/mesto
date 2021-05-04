@@ -82,7 +82,7 @@ function profileEditPopupProcessor(popup) {
 }
 
 function profileAddPopupProcessor(popup) {
-  return formPopupProcessor(popup, (cardName, urlLink) => addPlaceCard(createPlaceCard(cardName, urlLink)));
+  return formPopupProcessor(popup, (cardName, urlLink) => addPlaceCard(cardName, urlLink));
 }
 
 /**
@@ -141,14 +141,23 @@ function popupInit(popupId, openButton, customPopupProcessor) {
 }
 
 /**
+ * Creates an empty place card from place card template
+ * @returns {HTMLElement}
+ */
+function getCardFromTemplate() {
+  const placeCardTemplate = document.querySelector('#placeCardTemplate').content;
+  const placeCard = placeCardTemplate.querySelector('.place').cloneNode(true);
+  return placeCard;
+}
+
+/**
  * Creates a new place card
  * @param {string} placeName - name
  * @param {string} imageUrl - url
  * @returns {HTMLElement} HTMLElement place card
  */
  function createPlaceCard(placeNameText, imageUrl) {
-  const placeCardTemplate = document.querySelector('#placeCardTemplate').content;
-  const newPlaceCard = placeCardTemplate.querySelector('.place').cloneNode(true);
+  const newPlaceCard = getCardFromTemplate();
 
   const placePhoto = newPlaceCard.querySelector('.place__photo');
   const photoAttributes = [{src: imageUrl}, {alt: `фото ${placeNameText}`}];
@@ -171,8 +180,8 @@ function popupInit(popupId, openButton, customPopupProcessor) {
 
 /**
  * Prepends or appends childElement to parentElement
- * @param {HTMLElement} parentElement
- * @param {HTMLElement} childElement
+ * @param {HTMLElement | DocumentFragment} parentElement
+ * @param {HTMLElement | DocumentFragment} childElement
  * @param {string} position 'first' == prepend, 'last' == append
  */
 function appendElementCustom(parentElement, childElement, position = 'first') {
@@ -183,22 +192,41 @@ function appendElementCustom(parentElement, childElement, position = 'first') {
 }
 
 /**
- * Adds a place card to places list
- * @param {HTMLElement} placeCard
+ * Adds 1 card to destination
+ * @param {HTMLElement | DocumentFragment} destination
+ * @param {string} cardName
+ * @param {string} urlLink
  * @param {string} position - 'first' || 'last'
  */
-function addPlaceCard(placeCard, position = 'first') {
-  const placesList = document.querySelector('.places__list');
-  appendElementCustom(placesList, placeCard, position);
+function addPlaceCardCustom(destination, cardName, urlLink, position = 'first') {
+  appendElementCustom(destination, createPlaceCard(cardName, urlLink), position);
 }
 
 /**
- * Adds a set of cards to the page from a cards array
- * @param {Array} arr - Array of {name: '', link: ''} pairs
+ * Adds 1 card to the page
+ * @param {string} cardName
+ * @param {string} urlLink
  * @param {string} position - 'first' || 'last'
  */
-function createCardsFromArray(arr, position = 'first') {
-  arr.forEach(item => addPlaceCard(createPlaceCard(item.name, item.link), position));
+function addPlaceCard(cardName, urlLink, position = 'first') {
+  const placesList = document.querySelector('.places__list');
+  addPlaceCardCustom(placesList, cardName, urlLink, position);
+}
+
+/**
+ * Adds a set of cards to the page from a cards array with single layout recalculation
+ * @param {Array} arr - Array of {name: '', link: ''} pairs
+ * @param {string} position - 'first' || 'last' - adds the whole fragment in the beginning or the end
+ * @param {boolean} reverse - false || true -> reverses array
+ */
+function addPlaceCardMulti(arr, position = 'first', reverse = false) {
+  const placesList = document.querySelector('.places__list');
+  //trigger layout recalc only once
+  const cardsFragment = new DocumentFragment();
+  if (reverse)
+    arr = arr.reverse();
+  arr.forEach(item => addPlaceCardCustom(cardsFragment, item.name, item.link, 'last'));
+  appendElementCustom(placesList, cardsFragment, position);
 }
 
 /**
@@ -206,7 +234,7 @@ function createCardsFromArray(arr, position = 'first') {
  */
 function pageInit() {
   //display initial cards
-  createCardsFromArray(initialCards, 'last');
+  addPlaceCardMulti(initialCards);
 
   //get the popup open button
   const profileEditButton = document.querySelector('.profile__edit-button');
