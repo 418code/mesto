@@ -7,6 +7,8 @@
 @import url(../blocks/transparent/_amount/transparent_amount_more.css);
 @import url(../blocks/transparent/_amount/transparent_amount_much-more.css);
 
+@import url(../blocks/flip/flip.css);
+
 /* body block */
 @import url(../blocks/body/body.css);
 @import url(../blocks/body/__element/body__element.css);
