@@ -75,8 +75,8 @@ function processFormPopup(popup, useFormInput, getValues = () => ["",""]) {
  * @returns {function} processFormPopup
  */
 function processProfileEditPopup(popup) {
-  let profileName = document.querySelector('.profile__name');
-  let profileDescription = document.querySelector('.profile__description');
+  const profileName = document.querySelector('.profile__name');
+  const profileDescription = document.querySelector('.profile__description');
 
   //useFormInput callback
   function editProfile(profileNameNew, profileDescriptionNew) {
