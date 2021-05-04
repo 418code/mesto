@@ -25,12 +25,22 @@ const initialCards = [
   }
 ];
 
-//opens or closes popup
+//
+/**
+ * Switches popup between open and close states
+ * @param {HTMLElement} popup
+ */
 function togglePopup(popup) {
   popup.classList.toggle('popup_opened');
 }
 
-//handles form logic inside popup
+/**
+ * Handles form logic inside popup
+ * @param {HTMLElement} popup
+ * @param {function} useFormInput - callback for processing form input
+ * @param {function} getValues - callback for getting form values
+ * @returns {function} custom open button handler
+ */
 function processFormPopup(popup, useFormInput, getValues = () => ["",""]) {
   const topInput = popup.querySelectorAll('.popup__form-text')[0];
   const bottomInput = popup.querySelectorAll('.popup__form-text')[1];
@@ -59,7 +69,11 @@ function processFormPopup(popup, useFormInput, getValues = () => ["",""]) {
   return presentFormPopup;
 }
 
-//handles profile edit logic indside popup
+/**
+ * Handles profile edit logic indside popup
+ * @param {HTMLElement} popup
+ * @returns {function} processFormPopup
+ */
 function processProfileEditPopup(popup) {
   let profileName = document.querySelector('.profile__name');
   let profileDescription = document.querySelector('.profile__description');
@@ -81,6 +95,11 @@ function processProfileEditPopup(popup) {
   return processFormPopup(popup, editProfile, getValues);
 }
 
+/**
+ * Handles profile add new card logic inside popup
+ * @param {HTMLElement} popup
+ * @returns processFormPopup
+ */
 function processProfileAddPopup(popup) {
   return processFormPopup(popup, (cardName, urlLink) => addPlaceCard(cardName, urlLink));
 }
