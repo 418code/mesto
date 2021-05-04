@@ -23,12 +23,12 @@
           <div class="profile__info">
             <div class="profile__name-edit-wrap">
               <h1 class="profile__name">Жак-Ив Кусто</h1>
-              <button class="profile__edit-button transparent transparent_amount_more" type="button"></button>
+              <button class="profile__edit-button transparent transparent_amount_more" type="button" aria-label="Profile edit button"></button>
             </div>
             <p class="profile__description">Исследователь океана</p>
           </div>
         </div>
-        <button class="profile__add-button transparent transparent_amount_more" type="button"></button>
+        <button class="profile__add-button transparent transparent_amount_more" type="button" aria-label="Place card add button"></button>
       </section>
       <section class="places body__element">
         <ul class="places__list body__element">
@@ -40,7 +40,7 @@
     </footer>
     <div class="popup popup_transparent_amount_medium" id="editProfile">
       <div class="popup__container">
-        <button class="popup__container-close-btn transparent transparent_amount_more" type="button"></button>
+        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Popup close button"></button>
         <form name="editProfile" class="popup__form">
           <h2 class="popup__form-title">Редактировать профиль</h2>
           <input type="text" name="profileName" class="popup__form-text" placeholder="Жак-Ив Кусто">
@@ -51,7 +51,7 @@
     </div>
     <div class="popup popup_transparent_amount_medium" id="addPlace">
       <div class="popup__container">
-        <button class="popup__container-close-btn transparent transparent_amount_more" type="button"></button>
+        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Popup close button"></button>
         <form name="editProfile" class="popup__form">
           <h2 class="popup__form-title">Новое место</h2>
           <input type="text" name="profileName" class="popup__form-text" placeholder="Название">
@@ -62,7 +62,7 @@
     </div>
     <div class="popup popup_transparent_amount_low" id="showPhoto">
       <div class="popup__container">
-        <button class="popup__container-close-btn transparent transparent_amount_more" type="button"></button>
+        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Popup close button"></button>
         <img src="#" alt="#" class="popup__photo">
         <p class="popup__photo-description"></p>
       </div>
@@ -70,11 +70,11 @@
   </div>
   <template id="placeCardTemplate">
     <li class="place">
-      <button class="place__remove-btn transparent transparent_amount_more" type="button"></button>
+      <button class="place__remove-btn transparent transparent_amount_more" type="button" aria-label="Place card delete button"></button>
       <img src="" alt="" class="place__photo flip">
       <div class="place__name-like-container">
         <h2 class="place__name"></h2>
-        <button class="place__like-btn transparent transparent_amount_less" type="button"></button>
+        <button class="place__like-btn transparent transparent_amount_less" type="button" aria-label="Place card like button"></button>
       </div>
     </li>
   </template>
