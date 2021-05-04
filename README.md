@@ -14,21 +14,28 @@ Sprints: 4 -
 JavaScript
 - editable profile information with an interactive popup
 - event listeners on edit, close and save buttons
-
-Figma
-- [link to Figma design](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
-- implement 320px and 1280px designs
-- images exported and optimized with imagemagick
+- place card creation by cloning its template
+- add initial place cards from an array
+- place card addition with a popup
+- enlarge photo from place card in a popup
+- place card like and delete functionality
 
 CSS
 - responsive layout with flexbox/grid and media queries
-- links changing opacity with transition mix-in
+- buttons changing opacity with transition mix-in
+- smooth popup fade in and out
+- card photo flip on hover
 - custom fonts imported
 - normalize.css
 
 HTML
 - semantic tags
 - emmet abbreviations
+
+Figma
+- [Sprint 4 Figma design](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
+- [Sprint 5 Figma design](https://www.figma.com/file/bjyvbKKJN2naO0ucURl2Z0/JavaScript.-Sprint-5?node-id=0%3A1)
+- implement 320px and 1280px designs
 
 BEM
 - CSS classes organized according to Block Element Modifier system
@@ -41,3 +48,4 @@ Git
 - commands: commit, log, status, diff, branch, merge, push, pull
 - commits organization: feat, fix, refactor
 - GitHub pages
+- SSH
