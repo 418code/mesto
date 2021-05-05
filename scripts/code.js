@@ -52,10 +52,8 @@ function processProfileEditPopup(popup) {
 
   //useFormInput callback
   function editProfile(profileNameNew, profileDescriptionNew) {
-    if (profileName !== "")
-      profileName.textContent = profileNameNew;
-    if (profileDescription !== "")
-      profileDescription.textContent = profileDescriptionNew;
+    profileName.textContent = profileNameNew;
+    profileDescription.textContent = profileDescriptionNew;
   }
 
   //callback to prevent static form values
