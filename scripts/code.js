@@ -1,31 +1,3 @@
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
-//
 /**
  * Switches popup between open and close states
  * @param {HTMLElement} popup
@@ -248,18 +220,13 @@ function addPlaceCardMulti(arr, position = 'first', reverse = false) {
   appendElementCustom(placesList, cardsFragment, position);
 }
 
-/**
- * Initializes the page on load
- */
-function initPage() {
-  //display initial cards
-  addPlaceCardMulti(initialCards);
+//display initial cards
+addPlaceCardMulti(initialCards);
 
-  //get the popup open button
-  const profileEditButton = document.querySelector('.profile__edit-button');
-  const profileEditPopup = initPopup('#editProfile', profileEditButton, processProfileEditPopup);
+//get the popup open button
+const profileEditButton = document.querySelector('.profile__edit-button');
+const profileEditPopup = initPopup('#editProfile', profileEditButton, processProfileEditPopup);
 
-  //get handler for card add button
-  const profileAddButton = document.querySelector('.profile__add-button');
-  const profileAddPopup = initPopup('#addPlace', profileAddButton, processProfileAddPopup);
-}
+//get handler for card add button
+const profileAddButton = document.querySelector('.profile__add-button');
+const profileAddPopup = initPopup('#addPlace', profileAddButton, processProfileAddPopup);
