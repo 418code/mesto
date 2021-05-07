@@ -85,23 +85,27 @@ function processFormPopup(popup, useFormInput, formInputNamesDestinationElements
 /**
  * Handles profile edit logic indside popup
  * @param {HTMLElement} popup
- * @returns {function} processFormPopup - open button handler
  */
 function processProfileEditPopup(popup) {
   const profileName = document.querySelector('.profile__name');
   const profileDescription = document.querySelector('.profile__description');
+  const profileEditButton = document.querySelector('.profile__edit-button');
 
-  //send the open button handler back
-  return processFormPopup(popup, (inputs) => applyInputValues(inputs), {profileName: profileName, profileDescription: profileDescription});
+  profileEditButton.addEventListener('click', processFormPopup(popup,
+   (inputs) => applyInputValues(inputs), {profileName: profileName, profileDescription: profileDescription}));
 }
 
 /**
  * Handles profile add new card logic inside popup
  * @param {HTMLElement} popup
- * @returns {function} processFormPopup
  */
 function processProfileAddPopup(popup) {
-  return processFormPopup(popup, (inputs) => addPlaceCard(inputs['placeName'][0].value, inputs['placeUrl'][0].value), {placeName: {}, placeUrl: {}}, empty = true);
+  const profileAddButton = document.querySelector('.profile__add-button');
+
+  profileAddButton.addEventListener('click',
+   processFormPopup(popup,
+   (inputs) => addPlaceCard(inputs['placeName'][0].value, inputs['placeUrl'][0].value),
+   {placeName: {}, placeUrl: {}}, empty = true));
 }
 
 /**
@@ -116,47 +120,19 @@ function makeProcessShowPhotoPopup() {
 
   /**
   * Prepares a photo popup
+  * @param placePhoto {HTMLElement} - place card photo used as an open button
   * @param {Array} attributes - [{src: 'imageUrl'}, {alt: 'photo text description'}]
-  * @param {string} photoDescription
+  * @param {string} photoDescription - text at the bottom of the popup
   * @returns {function} photo onclick callback
   */
-  function processShowPhotoPopup(attributes = [{src: ''}, {alt: ''}], photoDescription = '') {
-    //photo onclick callback
-    return () => {
+  function processShowPhotoPopup(placePhoto, attributes = [{src: ''}, {alt: ''}], photoDescription = '') {
+    placePhoto.addEventListener('click', () => {
       setElementAttributes(popupPhoto, attributes);
       popupPhotoDescription.textContent = photoDescription;
-      togglePopup(popup)
-    };
+      togglePopup(popup);
+    });
   }
   return processShowPhotoPopup;
-}
-
-/**
- * Prepares initPopup for use
- * @param {string} popupId
- * @returns {function} initPopup
- */
-function makeInitPopup(popupId) {
-  const popup = document.querySelector(popupId);
-
-  //close the popup with X, only 1 event listener
-  const closeButton = popup.querySelector('.popup__container-close-btn');
-  closeButton.onclick = () => togglePopup(popup);
-
-  /**
-  * Prepares a popup for use
-  * @param {HTMLElement} openButton
-  * @param {function} processPopupCustom
-  * @returns {HTMLElement} popup
-  */
-  function initPopup(openButton, processPopupCustom) {
-    //open popup with openButton, only 1 action per button
-    if (!openButton.onclick)
-      openButton.onclick = processPopupCustom(popup);
-
-    return popup;
-  }
-  return initPopup;
 }
 
 /**
@@ -193,7 +169,7 @@ function makeGetCardFromTemplate() {
 
 /**
  * Creates a new place card
- * @param {string} placeName - name
+ * @param {string} placeNameText - name
  * @param {string} imageUrl - url
  * @returns {HTMLElement} HTMLElement place card
  */
@@ -214,7 +190,7 @@ function makeGetCardFromTemplate() {
   likeButton.addEventListener('click', (evt) => evt.target.classList.toggle('place__like-btn_selected'));
 
   //popup open button -> placePhoto
-  const popup = initPhotoPopup(placePhoto, () => processShowPhotoPopup(photoAttributes, `${placeNameText}`));
+  processShowPhotoPopup(placePhoto, photoAttributes, `${placeNameText}`);
 
   return newPlaceCard;
 }
@@ -286,11 +262,21 @@ function makeAddPlaceCardMulti() {
   return addPlaceCardMulti;
 }
 
-//prepare photo popup logic
-const initPhotoPopup = makeInitPopup('#showPhoto');
-const processShowPhotoPopup = makeProcessShowPhotoPopup();
+/**
+ * Prepares a popup for use
+ * @param {string} popupId
+ * @param {function} processPopupCustom
+ */
+function initPopup(popupId, processPopupCustom) {
+  const popup = document.querySelector(popupId);
+  const closeButton = popup.querySelector('.popup__container-close-btn');
+
+  closeButton.addEventListener('click', () => togglePopup(popup));
+  processPopupCustom(popup);
+}
 
 //prepare card creation logic
+const processShowPhotoPopup = makeProcessShowPhotoPopup();
 const getCardFromTemplate = makeGetCardFromTemplate();
 const addPlaceCard = makeAddPlaceCard();
 const addPlaceCardMulti = makeAddPlaceCardMulti();
@@ -298,12 +284,7 @@ const addPlaceCardMulti = makeAddPlaceCardMulti();
 //display initial cards
 addPlaceCardMulti(initialCards);
 
-//prepare profile edit popup
-const initProfileEditPopup = makeInitPopup('#editProfile');
-const profileEditButton = document.querySelector('.profile__edit-button');
-const profileEditPopup = initProfileEditPopup(profileEditButton, processProfileEditPopup);
-
-//prepare profile add popup
-const initProfileAddPopup = makeInitPopup('#addPlace');
-const profileAddButton = document.querySelector('.profile__add-button');
-const profileAddPopup = initProfileAddPopup(profileAddButton, processProfileAddPopup);
+//prepare popups
+initPopup('#editProfile', processProfileEditPopup);
+initPopup('#addPlace', processProfileAddPopup);
+initPopup('#showPhoto', () => {});
