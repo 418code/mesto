@@ -8,4 +8,5 @@
   outline: none;
   border: none;
   z-index: 1;
+  cursor: pointer;
 }
