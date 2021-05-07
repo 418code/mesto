@@ -7,29 +7,70 @@ function togglePopup(popup) {
 }
 
 /**
+ * Gets input values from destination
+ * @param {Object} inputs - {inputName1: [inputElement1, destinationElement1], inputName2: [inputElement2, destinationElement2]}
+ */
+function getInputValues(inputs) {
+  for (const pair of Object.values(inputs)) {
+    const [inputElement, destinationElement] = pair;
+    if (inputElement && destinationElement)
+      inputElement.value = destinationElement.textContent;
+  }
+}
+
+/**
+ * Applies input values to desination
+ * @param {Object} inputs - {inputName1: [inputElement1, destinationElement1], inputName2: [inputElement2, destinationElement2]}
+ */
+function applyInputValues(inputs) {
+  for (const pair of Object.values(inputs)) {
+    const [inputElement, destinationElement] = pair;
+    if (inputElement && destinationElement)
+      destinationElement.textContent = inputElement.value;
+  }
+}
+
+/**
+ * Clears input values
+ * @param {Object} inputs - {inputName1: [inputElement1, destinationElement1], inputName2: [inputElement2, destinationElement2]}
+ */
+function emptyInputValues(inputs) {
+  for (const pair of Object.values(inputs)) {
+    const [inputElement, destinationElement] = pair;
+    if (inputElement)
+      inputElement.value = '';
+  }
+}
+
+/**
  * Handles form logic inside popup
  * @param {HTMLElement} popup
- * @param {function} useFormInput - callback for processing form input
- * @param {function} getValues - callback for getting form values
+ * @param {function} useFormInput - callback with inputs param: {inputName1: [inputElement1, destinationElement1], inputName2: [inputElement2, destinationElement2]}
+ * @param {Object} formInputNamesDestinationElements - {formInputName1: destinationElement1, formInputName2: destinationElement2}
+ * @param {boolean} empty - clears form inputs on open if true
  * @returns {function} custom open button handler
  */
-function processFormPopup(popup, useFormInput, getValues = () => ["",""]) {
-  const topInput = popup.querySelectorAll('.popup__form-text')[0];
-  const bottomInput = popup.querySelectorAll('.popup__form-text')[1];
+function processFormPopup(popup, useFormInput, formInputNamesDestinationElements, empty = false) {
+  //{inputName1: [inputElement1, destinationElement1], inputName2: [inputElement2, destinationElement2]}
+  const inputs = {};
+  for (const key of Object.keys(formInputNamesDestinationElements)) {
+    inputs[key] = [popup.querySelector(`input[name=${key}]`), formInputNamesDestinationElements[key]];
+  }
 
   //open button handler callback for form popup
   function presentFormPopup() {
-    //fill placeholder values from existing data
-    const values = getValues();
-    topInput.value = values[0];
-    bottomInput.value = values[1];
+    //read input values from destination
+    if (!empty)
+      getInputValues(inputs);
+    else
+      emptyInputValues(inputs);
     togglePopup(popup);
   }
 
   //form submit button callback
   function submitFormCustom(evt) {
     evt.preventDefault();
-    useFormInput(topInput.value, bottomInput.value);
+    useFormInput(inputs);
     togglePopup(popup);
   }
 
@@ -44,74 +85,78 @@ function processFormPopup(popup, useFormInput, getValues = () => ["",""]) {
 /**
  * Handles profile edit logic indside popup
  * @param {HTMLElement} popup
- * @returns {function} processFormPopup
+ * @returns {function} processFormPopup - open button handler
  */
 function processProfileEditPopup(popup) {
   const profileName = document.querySelector('.profile__name');
   const profileDescription = document.querySelector('.profile__description');
 
-  //useFormInput callback
-  function editProfile(profileNameNew, profileDescriptionNew) {
-    profileName.textContent = profileNameNew;
-    profileDescription.textContent = profileDescriptionNew;
-  }
-
-  //callback to prevent static form values
-  function getValues() {
-    return [profileName.textContent, profileDescription.textContent];
-  }
-
   //send the open button handler back
-  return processFormPopup(popup, editProfile, getValues);
+  return processFormPopup(popup, (inputs) => applyInputValues(inputs), {profileName: profileName, profileDescription: profileDescription});
 }
 
 /**
  * Handles profile add new card logic inside popup
  * @param {HTMLElement} popup
- * @returns processFormPopup
+ * @returns {function} processFormPopup
  */
 function processProfileAddPopup(popup) {
-  return processFormPopup(popup, (cardName, urlLink) => addPlaceCard(cardName, urlLink));
+  return processFormPopup(popup, (inputs) => addPlaceCard(inputs['placeName'][0].value, inputs['placeUrl'][0].value), {placeName: {}, placeUrl: {}}, empty = true);
 }
 
 /**
- * Prepares photo popup
- * @param {HTMLElement} popup
- * @param {Array} attributes - [{src: 'imageUrl'}, {alt: 'photo text description'}]
- * @param {string} photoDescription
- * @returns {function} photo onclick callback
+ * Prepares processShowPhotoPopup for use
+ * @returns {function} processShowPhotoPopup
  */
-function processShowPhotoPopup(popup, attributes = [{src: ''}, {alt: ''}], photoDescription = '') {
+function makeProcessShowPhotoPopup() {
+  //find it once
+  const popup = document.querySelector('#showPhoto');
   const popupPhoto = popup.querySelector('.popup__photo');
   const popupPhotoDescription = popup.querySelector('.popup__photo-description');
-  //photo onclick callback
-  return () => {
-    setElementAttributes(popupPhoto, attributes);
-    popupPhotoDescription.textContent = photoDescription;
-    togglePopup(popup)
-  };
+
+  /**
+  * Prepares a photo popup
+  * @param {Array} attributes - [{src: 'imageUrl'}, {alt: 'photo text description'}]
+  * @param {string} photoDescription
+  * @returns {function} photo onclick callback
+  */
+  function processShowPhotoPopup(attributes = [{src: ''}, {alt: ''}], photoDescription = '') {
+    //photo onclick callback
+    return () => {
+      setElementAttributes(popupPhoto, attributes);
+      popupPhotoDescription.textContent = photoDescription;
+      togglePopup(popup)
+    };
+  }
+  return processShowPhotoPopup;
 }
 
 /**
- * Prepares a popup for use
+ * Prepares initPopup for use
  * @param {string} popupId
- * @param {HTMLElement} openButton
- * @param {function} processPopupCustom
- * @returns {HTMLElement} popup
+ * @returns {function} initPopup
  */
-function initPopup(popupId, openButton, processPopupCustom) {
+function makeInitPopup(popupId) {
   const popup = document.querySelector(popupId);
 
   //close the popup with X, only 1 event listener
   const closeButton = popup.querySelector('.popup__container-close-btn');
-  if (!closeButton.onclick)
-    closeButton.onclick = () => togglePopup(popup);
+  closeButton.onclick = () => togglePopup(popup);
 
-  //open popup with openButton, only 1 action per button
-  if (!openButton.onclick)
-    openButton.onclick = processPopupCustom(popup);
+  /**
+  * Prepares a popup for use
+  * @param {HTMLElement} openButton
+  * @param {function} processPopupCustom
+  * @returns {HTMLElement} popup
+  */
+  function initPopup(openButton, processPopupCustom) {
+    //open popup with openButton, only 1 action per button
+    if (!openButton.onclick)
+      openButton.onclick = processPopupCustom(popup);
 
-  return popup;
+    return popup;
+  }
+  return initPopup;
 }
 
 /**
@@ -130,13 +175,20 @@ function initPopup(popupId, openButton, processPopupCustom) {
 }
 
 /**
- * Creates an empty place card from place card template
- * @returns {HTMLElement}
+ * Prepares getCardFromTemplate for use
+ * @returns {function} getCardFromTemplate
  */
-function getCardFromTemplate() {
+function makeGetCardFromTemplate() {
   const placeCardTemplate = document.querySelector('#placeCardTemplate').content;
-  const placeCard = placeCardTemplate.querySelector('.place').cloneNode(true);
-  return placeCard;
+  const placeCardInsideTemplate = placeCardTemplate.querySelector('.place');
+  /**
+  * Creates an empty place card from place card template
+  * @returns {HTMLElement}
+  */
+  function getCardFromTemplate() {
+    return placeCardInsideTemplate.cloneNode(true);
+  }
+  return getCardFromTemplate;
 }
 
 /**
@@ -162,7 +214,7 @@ function getCardFromTemplate() {
   likeButton.addEventListener('click', (evt) => evt.target.classList.toggle('place__like-btn_selected'));
 
   //popup open button -> placePhoto
-  const popup = initPopup('#showPhoto', placePhoto, (popup) => processShowPhotoPopup(popup, photoAttributes, `${placeNameText}`));
+  const popup = initPhotoPopup(placePhoto, () => processShowPhotoPopup(photoAttributes, `${placeNameText}`));
 
   return newPlaceCard;
 }
@@ -192,39 +244,66 @@ function addPlaceCardCustom(destination, cardName, urlLink, position = 'first') 
 }
 
 /**
- * Adds 1 card to the page
- * @param {string} cardName
- * @param {string} urlLink
- * @param {string} position - 'first' || 'last'
+ * Prepares addPlaceCard for use
+ * @returns {function} addPlaceCard
  */
-function addPlaceCard(cardName, urlLink, position = 'first') {
+function makeAddPlaceCard() {
   const placesList = document.querySelector('.places__list');
-  addPlaceCardCustom(placesList, cardName, urlLink, position);
+
+  /**
+  * Adds 1 card to the page
+  * @param {string} cardName
+  * @param {string} urlLink
+  * @param {string} position - 'first' || 'last'
+  */
+  function addPlaceCard(cardName, urlLink, position = 'first') {
+    addPlaceCardCustom(placesList, cardName, urlLink, position);
+  }
+  return addPlaceCard;
 }
 
 /**
- * Adds a set of cards to the page from a cards array with single layout recalculation
- * @param {Array} arr - Array of {name: '', link: ''} pairs
- * @param {string} position - 'first' || 'last' - adds the whole fragment in the beginning or the end
- * @param {boolean} reverse - false || true -> reverses array
+ * Prepares addPlaceCardMulti for use
+ * @returns {function} addPlaceCardMulti
  */
-function addPlaceCardMulti(arr, position = 'first', reverse = false) {
+function makeAddPlaceCardMulti() {
   const placesList = document.querySelector('.places__list');
-  //trigger layout recalc only once
-  const cardsFragment = new DocumentFragment();
-  if (reverse)
-    arr = arr.reverse();
-  arr.forEach(item => addPlaceCardCustom(cardsFragment, item.name, item.link, 'last'));
-  appendElementCustom(placesList, cardsFragment, position);
+
+  /**
+  * Adds a set of cards to the page from a cards array with single layout recalculation
+  * @param {Array} arr - Array of {name: '', link: ''} pairs
+  * @param {string} position - 'first' || 'last' - adds the whole fragment in the beginning or the end
+  * @param {boolean} reverse - false || true -> reverses array
+  */
+  function addPlaceCardMulti(arr, position = 'first', reverse = false) {
+    //trigger layout recalc only once
+    const cardsFragment = new DocumentFragment();
+    if (reverse)
+      arr = arr.reverse();
+    arr.forEach(item => addPlaceCardCustom(cardsFragment, item.name, item.link, 'last'));
+    appendElementCustom(placesList, cardsFragment, position);
+  }
+  return addPlaceCardMulti;
 }
+
+//prepare photo popup logic
+const initPhotoPopup = makeInitPopup('#showPhoto');
+const processShowPhotoPopup = makeProcessShowPhotoPopup();
+
+//prepare card creation logic
+const getCardFromTemplate = makeGetCardFromTemplate();
+const addPlaceCard = makeAddPlaceCard();
+const addPlaceCardMulti = makeAddPlaceCardMulti();
 
 //display initial cards
 addPlaceCardMulti(initialCards);
 
-//get the popup open button
+//prepare profile edit popup
+const initProfileEditPopup = makeInitPopup('#editProfile');
 const profileEditButton = document.querySelector('.profile__edit-button');
-const profileEditPopup = initPopup('#editProfile', profileEditButton, processProfileEditPopup);
+const profileEditPopup = initProfileEditPopup(profileEditButton, processProfileEditPopup);
 
-//get handler for card add button
+//prepare profile add popup
+const initProfileAddPopup = makeInitPopup('#addPlace');
 const profileAddButton = document.querySelector('.profile__add-button');
-const profileAddPopup = initPopup('#addPlace', profileAddButton, processProfileAddPopup);
+const profileAddPopup = initProfileAddPopup(profileAddButton, processProfileAddPopup);
