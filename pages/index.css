@@ -62,6 +62,6 @@
 @import url(../blocks/popup/__form/popup__form.css);
 @import url(../blocks/popup/__form-title/popup__form-title.css);
 @import url(../blocks/popup/__form-text/popup__form-text.css);
-@import url(../blocks/popup/__form-save-btn/popup__form-save-btn.css);
+@import url(../blocks/popup/__form-submit-btn/popup__form-submit-btn.css);
 @import url(../blocks/popup/__photo/popup__photo.css);
 @import url(../blocks/popup/__photo-description/popup__photo-description.css);
