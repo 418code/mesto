@@ -1,0 +1,7 @@
+.popup__form-submit-btn_disabled {
+  border: 1px solid #000;
+  opacity: .2;
+  background-color: #fff;
+  color: #000;
+  cursor: default;
+}
