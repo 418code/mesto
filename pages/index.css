@@ -62,6 +62,13 @@
 @import url(../blocks/popup/__form/popup__form.css);
 @import url(../blocks/popup/__form-title/popup__form-title.css);
 @import url(../blocks/popup/__form-text/popup__form-text.css);
+@import url(../blocks/popup/__form-text/_type/popup__form-text_type_error.css);
+@import url(../blocks/popup/__form-text-error/popup__form-text-error.css);
+@import url(../blocks/popup/__form-text-error/_active/popup__form-text-error_active.css);
+@import url(../blocks/popup/__profile-name-input-error/popup__profile-name-input-error.css);
+@import url(../blocks/popup/__profile-description-input-error/popup__profile-description-input-error.css);
+@import url(../blocks/popup/__place-name-input-error/popup__place-name-input-error.css);
+@import url(../blocks/popup/__place-url-input-error/popup__place-url-input-error.css);
 @import url(../blocks/popup/__form-submit-btn/popup__form-submit-btn.css);
 @import url(../blocks/popup/__form-submit-btn/_disabled/popup__form-submit-btn_disabled.css);
 @import url(../blocks/popup/__photo/popup__photo.css);

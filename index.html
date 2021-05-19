@@ -41,22 +41,29 @@
     <div class="popup popup_transparent_medium" id="editProfile">
       <div class="popup__container">
         <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Кнопка закрытия попапа"></button>
-        <form name="editProfile" class="popup__form">
+        <form name="editProfile" class="popup__form" novalidate>
           <h2 class="popup__form-title">Редактировать профиль</h2>
-          <input type="text" name="profileName" class="popup__form-text" placeholder="Жак-Ив Кусто" required="required">
-          <input type="text" name="profileDescription" class="popup__form-text" placeholder="Исследователь океана" required="required">
-          <button class="popup__form-submit-btn transparent transparent_amount_much-more" type="submit">Сохранить</button>
+          <input id="popup__profile-name-input" type="text" name="profileName"
+           class="popup__form-text" placeholder="Жак-Ив Кусто" minlength="2" maxlength="40" required="required">
+          <span class="popup__profile-name-input-error popup__form-text-error">Вы пропустили это поле.</span>
+          <input id="popup__profile-description-input" type="text" name="profileDescription"
+           class="popup__form-text" placeholder="Исследователь океана" minlength="2" maxlength="200" required="required">
+          <span class="popup__profile-description-input-error popup__form-text-error">Вы пропустили это поле.</span>
+          <button class="popup__form-submit-btn popup__form-submit-btn_disabled" disabled="disabled" type="submit">Сохранить</button>
         </form>
       </div>
     </div>
     <div class="popup popup_transparent_medium" id="addPlace">
       <div class="popup__container">
         <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Кнопка закрытия попапа"></button>
-        <form name="addPlace" class="popup__form">
+        <form name="addPlace" class="popup__form" novalidate>
           <h2 class="popup__form-title">Новое место</h2>
-          <input type="text" name="placeName" class="popup__form-text" placeholder="Название" required="required">
-          <input type="url" name="placeUrl" class="popup__form-text" placeholder="Ссылка на картинку" required="required">
-          <button class="popup__form-submit-btn transparent transparent_amount_much-more" type="submit">Создать</button>
+          <input id="popup__place-name-input" type="text" name="placeName"
+           class="popup__form-text" placeholder="Название" minlength="2" maxlength="30" required="required">
+          <span class="popup__place-name-input-error popup__form-text-error">Вы пропустили это поле.</span>
+          <input id="popup__place-url-input" type="url" name="placeUrl" class="popup__form-text" placeholder="Ссылка на картинку" required="required">
+          <span class="popup__place-url-input-error popup__form-text-error">Введите адрес сайта.</span>
+          <button class="popup__form-submit-btn popup__form-submit-btn_disabled" disabled="disabled" type="submit">Создать</button>
         </form>
       </div>
     </div>
@@ -78,6 +85,8 @@
       </div>
     </li>
   </template>
+  <script src="./scripts/config.js"></script>
+  <script src="./scripts/validate.js"></script>
   <script src="./scripts/initial-cards.js"></script>
   <script src="./scripts/code.js"></script>
 </body>

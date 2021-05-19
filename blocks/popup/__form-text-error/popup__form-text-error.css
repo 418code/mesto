@@ -1,0 +1,18 @@
+.popup__form-text-error {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ff0000;
+  padding-bottom: 5px;
+  visibility: hidden;
+}
+
+.popup__form-text-error:last-of-type {
+  margin-bottom: 18px;
+}
+
+@media (min-width: 530px) {
+  .popup__form-text-error:last-of-type {
+    margin-bottom: 22px;
+  }
+}

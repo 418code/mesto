@@ -8,53 +8,50 @@ function togglePopup(popup) {
 
 /**
  * Gets input values from destination
- * @param {Object} inputs - {inputName1: [inputElement1, destinationElement1], inputName2: [inputElement2, destinationElement2]}
+ * @param {Object} inputs - {inputName1: [inputElement1, destinationElement1, errorElement1], inputName2: [inputElement2, destinationElement2, errorElement2]}
  */
 function getInputValues(inputs) {
-  for (const pair of Object.values(inputs)) {
-    const [inputElement, destinationElement] = pair;
+  for (const elements of Object.values(inputs)) {
+    const [inputElement, destinationElement] = elements;
     if (inputElement && destinationElement)
+    {
       inputElement.value = destinationElement.textContent;
+      inputElement.dispatchEvent(new Event('input'));
+    }
   }
 }
 
 /**
  * Applies input values to desination
- * @param {Object} inputs - {inputName1: [inputElement1, destinationElement1], inputName2: [inputElement2, destinationElement2]}
+ * @param {Object} inputs - {inputName1: [inputElement1, destinationElement1, errorElement1], inputName2: [inputElement2, destinationElement2, errorElement2]}
  */
 function applyInputValues(inputs) {
-  for (const pair of Object.values(inputs)) {
-    const [inputElement, destinationElement] = pair;
+  for (const elements of Object.values(inputs)) {
+    const [inputElement, destinationElement] = elements;
     if (inputElement && destinationElement)
       destinationElement.textContent = inputElement.value;
   }
 }
 
 /**
- * Clears input values
- * @param {Object} inputs - {inputName1: [inputElement1, destinationElement1], inputName2: [inputElement2, destinationElement2]}
- */
-function emptyInputValues(inputs) {
-  for (const pair of Object.values(inputs)) {
-    const [inputElement, destinationElement] = pair;
-    if (inputElement)
-      inputElement.value = '';
-  }
-}
-
-/**
  * Handles form logic inside popup
  * @param {HTMLElement} popup
- * @param {function} useFormInput - callback with inputs param: {inputName1: [inputElement1, destinationElement1], inputName2: [inputElement2, destinationElement2]}
+ * @param {function} useFormInput - callback with inputs param: {inputName1: [inputElement1, destinationElement1, errorElement1],
+ *  inputName2: [inputElement2, destinationElement2, errorElement2]}
  * @param {Object} formInputNamesDestinationElements - {formInputName1: destinationElement1, formInputName2: destinationElement2}
  * @param {boolean} empty - clears form inputs on open if true
  * @returns {function} custom open button handler
  */
-function processFormPopup(popup, useFormInput, formInputNamesDestinationElements, empty = false) {
-  //{inputName1: [inputElement1, destinationElement1], inputName2: [inputElement2, destinationElement2]}
+function processFormPopup(popup, useFormInput, formInputNamesDestinationElements, config, empty = false) {
+  //{inputName1: [inputElement1, destinationElement1, errorElement1], inputName2: [inputElement2, destinationElement2, errorElement2]}
+  const popupForm = popup.querySelector('.' + config.form);
+  const formSubmitButton = popupForm.querySelector('.' + config.submitButton);
   const inputs = {};
+
   for (const key of Object.keys(formInputNamesDestinationElements)) {
-    inputs[key] = [popup.querySelector(`input[name=${key}]`), formInputNamesDestinationElements[key]];
+    const inputElement = popup.querySelector(`input[name=${key}]`);
+    const errorElement = popupForm.querySelector(`.${inputElement.id}-error`);
+    inputs[key] = [inputElement, formInputNamesDestinationElements[key], errorElement];
   }
 
   //open button handler callback for form popup
@@ -63,7 +60,7 @@ function processFormPopup(popup, useFormInput, formInputNamesDestinationElements
     if (!empty)
       getInputValues(inputs);
     else
-      emptyInputValues(inputs);
+      clearForm(popupForm, formSubmitButton, inputs, config);
     togglePopup(popup);
   }
 
@@ -75,7 +72,6 @@ function processFormPopup(popup, useFormInput, formInputNamesDestinationElements
   }
 
   //form save button
-  const popupForm = popup.querySelector('.popup__form');
   popupForm.addEventListener('submit', submitFormCustom);
 
   //send back custom open button handler
@@ -92,7 +88,7 @@ function processProfileEditPopup(popup) {
   const profileEditButton = document.querySelector('.profile__edit-button');
 
   profileEditButton.addEventListener('click', processFormPopup(popup,
-   (inputs) => applyInputValues(inputs), {profileName: profileName, profileDescription: profileDescription}));
+   (inputs) => applyInputValues(inputs), {profileName: profileName, profileDescription: profileDescription}, config));
 }
 
 /**
@@ -105,7 +101,7 @@ function processProfileAddPopup(popup) {
   profileAddButton.addEventListener('click',
    processFormPopup(popup,
    (inputs) => addPlaceCard(inputs['placeName'][0].value, inputs['placeUrl'][0].value),
-   {placeName: {}, placeUrl: {}}, empty = true));
+   {placeName: {}, placeUrl: {}}, config, empty = true));
 }
 
 /**
@@ -288,3 +284,5 @@ addPlaceCardMulti(initialCards);
 initPopup('#editProfile', processProfileEditPopup);
 initPopup('#addPlace', processProfileAddPopup);
 initPopup('#showPhoto', () => {});
+
+enableValidation(config);

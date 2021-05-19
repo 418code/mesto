@@ -8,15 +8,5 @@
   font-size: 14px;
   line-height: 16.94px;
   padding-bottom: 3px;
-  margin-bottom: 26px;
-}
-
-.popup__form-text:last-of-type {
-  margin-bottom: 44px;
-}
-
-@media (min-width: 530px) {
-  .popup__form-text:last-of-type {
-    margin-bottom: 48px;
-  }
+  margin-bottom: 3px;
 }
