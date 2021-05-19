@@ -1,9 +1,45 @@
 /**
- * Switches popup between open and close states
+ * Closes a popup
  * @param {HTMLElement} popup
  */
-function togglePopup(popup) {
-  popup.classList.toggle('popup_opened');
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+  window.removeEventListener('keydown', handlePopupEscapeClose);
+  popup.removeEventListener('click', handlePopupSideClickClose);
+}
+
+/**
+ * Callback for handling closing popup on Escape button press
+ * @param {Object} evt
+ */
+function handlePopupEscapeClose(evt) {
+  if (evt.key === "Escape")
+    closePopup(handlePopupEscapeClose.popup);
+}
+
+/**
+ * Callback for handling closing popup with a side click
+ * @param {Object} evt
+ */
+function handlePopupSideClickClose(evt) {
+  if (evt.target === evt.currentTarget)
+    closePopup(handlePopupSideClickClose.popup);
+}
+
+/**
+ * Opens a popup
+ * @param {HTMLElement} popup
+ */
+function openPopup(popup) {
+  //closes popup with a click outside form/photo
+  handlePopupSideClickClose.popup = popup;
+  popup.addEventListener('click', handlePopupSideClickClose);
+
+  //closes popup with Escape button press
+  handlePopupEscapeClose.popup = popup;
+  window.addEventListener('keydown', handlePopupEscapeClose);
+
+  popup.classList.add('popup_opened');
 }
 
 /**
@@ -61,14 +97,14 @@ function processFormPopup(popup, useFormInput, formInputNamesDestinationElements
       getInputValues(inputs);
     else
       clearForm(popupForm, formSubmitButton, inputs, config);
-    togglePopup(popup);
+    openPopup(popup);
   }
 
   //form submit button callback
   function submitFormCustom(evt) {
     evt.preventDefault();
     useFormInput(inputs);
-    togglePopup(popup);
+    closePopup(popup);
   }
 
   //form save button
@@ -125,7 +161,7 @@ function makeProcessShowPhotoPopup() {
     placePhoto.addEventListener('click', () => {
       setElementAttributes(popupPhoto, attributes);
       popupPhotoDescription.textContent = photoDescription;
-      togglePopup(popup);
+      openPopup(popup);
     });
   }
   return processShowPhotoPopup;
@@ -267,7 +303,7 @@ function initPopup(popupId, processPopupCustom) {
   const popup = document.querySelector(popupId);
   const closeButton = popup.querySelector('.popup__container-close-btn');
 
-  closeButton.addEventListener('click', () => togglePopup(popup));
+  closeButton.addEventListener('click', () => closePopup(popup));
   processPopupCustom(popup);
 }
 
