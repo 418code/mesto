@@ -19,6 +19,8 @@ JavaScript
 - place card addition with a popup
 - enlarge photo from place card in a popup
 - place card like and delete functionality
+- custom form validation
+- close popup with a click on overlay and with the Esc key
 
 CSS
 - responsive layout with flexbox/grid and media queries
