@@ -21,6 +21,8 @@ JavaScript
 - place card like and delete functionality
 - custom form validation
 - close popup with a click on overlay and with the Esc key
+- refactor card logic with Card class: commit 556cbbb
+- refactor form validation logic with FormValidator class: commit a9a836c
 
 CSS
 - responsive layout with flexbox/grid and media queries
