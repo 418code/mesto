@@ -41,8 +41,8 @@ function applyInputValues(inputs) {
  */
 function processFormPopup(popup, useFormInput, formInputNamesDestinationElements, config, formValidator, empty = false) {
   //{inputName1: [inputElement1, destinationElement1], inputName2: [inputElement2, destinationElement2]}
-  const popupForm = popup.querySelector('.' + config.form);
-  const formSubmitButton = popupForm.querySelector('.' + config.submitButton);
+  const popupForm = popup.querySelector(`.${config.form}`);
+  const formSubmitButton = popupForm.querySelector(`.${config.submitButton}`);
   const inputs = {};
 
   for (const key of Object.keys(formInputNamesDestinationElements)) {
@@ -172,7 +172,7 @@ function makeAddPlaceCardMulti() {
  * @param {string} popupId
  * @param {function} processPopupCustom
  */
-function initPopup(popupId, processPopupCustom, formValidator = null) {
+function initPopup(popupId, processPopupCustom) {
   const popup = document.querySelector(popupId);
   const closeButton = popup.querySelector('.popup__container-close-btn');
   const form = popup.querySelector('.popup__form');
