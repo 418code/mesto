@@ -1,6 +1,6 @@
 import {Card} from './Card.js';
 import {initialCards, config} from '../utils/constants.js';
-import {openPopup, closePopup, setElementAttributes} from '../utils/utils.js';
+import {openPopup, closePopup} from '../utils/utils.js';
 import {FormValidator} from './FormValidator.js';
 
 /**
@@ -96,53 +96,8 @@ function processProfileAddPopup(popup, formValidator) {
 
   profileAddButton.addEventListener('click',
    processFormPopup(popup,
-   (inputs) => addPlaceCard(inputs['placeName'][0].value, inputs['placeUrl'][0].value),
+   (inputs) => addPlaceCard({name: inputs['placeName'][0].value, link: inputs['placeUrl'][0].value}),
    {placeName: {}, placeUrl: {}}, config, formValidator, true));
-}
-
-/**
- * Prepares getCardFromTemplate for use
- * @returns {function} getCardFromTemplate
- */
-function makeGetCardFromTemplate() {
-  const placeCardTemplate = document.querySelector('#placeCardTemplate').content;
-  const placeCardInsideTemplate = placeCardTemplate.querySelector('.place');
-  /**
-  * Creates an empty place card from place card template
-  * @returns {HTMLElement}
-  */
-  function getCardFromTemplate() {
-    return placeCardInsideTemplate.cloneNode(true);
-  }
-  return getCardFromTemplate;
-}
-
-/**
- * Creates a new place card
- * @param {string} placeNameText - name
- * @param {string} imageUrl - url
- * @returns {HTMLElement} HTMLElement place card
- */
- function createPlaceCard(placeNameText, imageUrl) {
-  const newPlaceCard = getCardFromTemplate();
-
-  const placePhoto = newPlaceCard.querySelector('.place__photo');
-  const photoAttributes = [{src: imageUrl}, {alt: `фото ${placeNameText}`}];
-  setElementAttributes(placePhoto, photoAttributes);
-
-  const placeName = newPlaceCard.querySelector('.place__name');
-  placeName.textContent = `${placeNameText}`;
-
-  const deleteButton = newPlaceCard.querySelector('.place__remove-btn');
-  const likeButton = newPlaceCard.querySelector('.place__like-btn');
-
-  deleteButton.addEventListener('click', (evt) => evt.target.parentElement.remove());
-  likeButton.addEventListener('click', (evt) => evt.target.classList.toggle('place__like-btn_selected'));
-
-  //popup open button -> placePhoto
-  processShowPhotoPopup(placePhoto, photoAttributes, `${placeNameText}`);
-
-  return newPlaceCard;
 }
 
 /**
@@ -161,12 +116,12 @@ function appendElementCustom(parentElement, childElement, position = 'first') {
 /**
  * Adds 1 card to destination
  * @param {HTMLElement | DocumentFragment} destination
- * @param {string} cardName
- * @param {string} urlLink
+ * @param {Object} cardData - {name: "", link: ""}
  * @param {string} position - 'first' || 'last'
  */
-function addPlaceCardCustom(destination, cardName, urlLink, position = 'first') {
-  const placeCard = new Card(cardName, urlLink, '#placeCardTemplate');
+function addPlaceCardCustom(destination, cardData, position = 'first') {
+  cardData.templateSelector = '#placeCardTemplate';
+  const placeCard = new Card(cardData);
   appendElementCustom(destination, placeCard.generateCard(), position);
 }
 
@@ -179,12 +134,11 @@ function makeAddPlaceCard() {
 
   /**
   * Adds 1 card to the page
-  * @param {string} cardName
-  * @param {string} urlLink
+  * @param {Object} cardData - {name: "", link: ""}
   * @param {string} position - 'first' || 'last'
   */
-  function addPlaceCard(cardName, urlLink, position = 'first') {
-    addPlaceCardCustom(placesList, cardName, urlLink, position);
+  function addPlaceCard(cardData, position = 'first') {
+    addPlaceCardCustom(placesList, cardData, position);
   }
   return addPlaceCard;
 }
@@ -207,7 +161,7 @@ function makeAddPlaceCardMulti() {
     const cardsFragment = new DocumentFragment();
     if (reverse)
       arr = arr.reverse();
-    arr.forEach(item => addPlaceCardCustom(cardsFragment, item.name, item.link, 'last'));
+    arr.forEach(item => addPlaceCardCustom(cardsFragment, item, 'last'));
     appendElementCustom(placesList, cardsFragment, position);
   }
   return addPlaceCardMulti;
@@ -234,7 +188,6 @@ function initPopup(popupId, processPopupCustom, formValidator = null) {
 }
 
 //prepare card creation logic
-const getCardFromTemplate = makeGetCardFromTemplate();
 const addPlaceCard = makeAddPlaceCard();
 const addPlaceCardMulti = makeAddPlaceCardMulti();
 
