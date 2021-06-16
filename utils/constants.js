@@ -32,7 +32,9 @@ const config = {
   submitButtonDisabled: 'popup__form-submit-btn_disabled',
   transparentMuchMore: ['transparent', 'transparent_amount_much-more'],
   inputFieldError: 'popup__form-text_type_error',
-  inputErrorMessageActive: 'popup__form-text-error_active'
+  inputErrorMessageActive: 'popup__form-text-error_active',
+  placesList: 'places__list',
+  cardTemplateSelector: '#placeCardTemplate'
 };
 
 export {initialCards, config}

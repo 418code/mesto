@@ -2,6 +2,7 @@ import {Card} from './Card.js';
 import {initialCards, config} from '../utils/constants.js';
 import {openPopup, closePopup} from '../utils/utils.js';
 import {FormValidator} from './FormValidator.js';
+import Section from './Section.js';
 
 /**
  * Gets input values from destination
@@ -96,75 +97,19 @@ function processProfileAddPopup(popup, formValidator) {
 
   profileAddButton.addEventListener('click',
    processFormPopup(popup,
-   (inputs) => addPlaceCard({name: inputs['placeName'][0].value, link: inputs['placeUrl'][0].value}),
+   (inputs) => addPlaceCard({name: inputs['placeName'][0].value, link: inputs['placeUrl'][0].value}, placesList),
    {placeName: {}, placeUrl: {}}, config, formValidator, true));
 }
 
 /**
- * Prepends or appends childElement to parentElement
- * @param {HTMLElement | DocumentFragment} parentElement
- * @param {HTMLElement | DocumentFragment} childElement
- * @param {string} position 'first' == prepend, 'last' == append
- */
-function appendElementCustom(parentElement, childElement, position = 'first') {
-  if (position === 'first')
-    parentElement.prepend(childElement);
-  else if (position === 'last')
-    parentElement.append(childElement);
-}
-
-/**
- * Adds 1 card to destination
- * @param {HTMLElement | DocumentFragment} destination
+ * Adds a new place card to a section
  * @param {Object} cardData - {name: "", link: ""}
- * @param {string} position - 'first' || 'last'
+ * @param {Section} destinationSection
  */
-function addPlaceCardCustom(destination, cardData, position = 'first') {
-  cardData.templateSelector = '#placeCardTemplate';
+function addPlaceCard(cardData, destinationSection) {
+  cardData.templateSelector = config.cardTemplateSelector;
   const placeCard = new Card(cardData);
-  appendElementCustom(destination, placeCard.generateCard(), position);
-}
-
-/**
- * Prepares addPlaceCard for use
- * @returns {function} addPlaceCard
- */
-function makeAddPlaceCard() {
-  const placesList = document.querySelector('.places__list');
-
-  /**
-  * Adds 1 card to the page
-  * @param {Object} cardData - {name: "", link: ""}
-  * @param {string} position - 'first' || 'last'
-  */
-  function addPlaceCard(cardData, position = 'first') {
-    addPlaceCardCustom(placesList, cardData, position);
-  }
-  return addPlaceCard;
-}
-
-/**
- * Prepares addPlaceCardMulti for use
- * @returns {function} addPlaceCardMulti
- */
-function makeAddPlaceCardMulti() {
-  const placesList = document.querySelector('.places__list');
-
-  /**
-  * Adds a set of cards to the page from a cards array with single layout recalculation
-  * @param {Array} arr - Array of {name: '', link: ''} pairs
-  * @param {string} position - 'first' || 'last' - adds the whole fragment in the beginning or the end
-  * @param {boolean} reverse - false || true -> reverses array
-  */
-  function addPlaceCardMulti(arr, position = 'first', reverse = false) {
-    //trigger layout recalc only once
-    const cardsFragment = new DocumentFragment();
-    if (reverse)
-      arr = arr.reverse();
-    arr.forEach(item => addPlaceCardCustom(cardsFragment, item, 'last'));
-    appendElementCustom(placesList, cardsFragment, position);
-  }
-  return addPlaceCardMulti;
+  destinationSection.addItem(placeCard.generateCard());
 }
 
 /**
@@ -187,12 +132,13 @@ function initPopup(popupId, processPopupCustom) {
   }
 }
 
-//prepare card creation logic
-const addPlaceCard = makeAddPlaceCard();
-const addPlaceCardMulti = makeAddPlaceCardMulti();
-
 //display initial cards
-addPlaceCardMulti(initialCards);
+const placesList = new Section({
+  items: initialCards,
+  renderer: (item) => addPlaceCard(item, placesList)
+}, `.${config.placesList}`);
+
+placesList.renderItems();
 
 //prepare popups
 initPopup('#editProfile', processProfileEditPopup);
