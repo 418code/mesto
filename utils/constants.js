@@ -34,7 +34,14 @@ const config = {
   inputFieldError: 'popup__form-text_type_error',
   inputErrorMessageActive: 'popup__form-text-error_active',
   placesList: 'places__list',
-  cardTemplateSelector: '#placeCardTemplate'
+  cardTemplateSelector: '#placeCardTemplate',
+  popupCloseButtonSelector: '.popup__container-close-btn',
+  popupOpenedClass: 'popup_opened',
+  popupPhotoSelector: '.popup__photo',
+  popupPhotoDescriptionSelector: '.popup__photo-description',
+  photoPopupTemplateSelector: '#showPhoto',
+  profileEditPopupTemplateSelector: '#editProfile',
+  profileAddPopupTemplateSelector: '#addPlace'
 };
 
 export {initialCards, config}

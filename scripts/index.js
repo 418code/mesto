@@ -1,8 +1,8 @@
 import {Card} from './Card.js';
 import {initialCards, config} from '../utils/constants.js';
-import {openPopup, closePopup} from '../utils/utils.js';
 import {FormValidator} from './FormValidator.js';
 import Section from './Section.js';
+import PopupWithImage from './PopupWithImage.js';
 
 /**
  * Gets input values from destination
@@ -102,12 +102,22 @@ function processProfileAddPopup(popup, formValidator) {
 }
 
 /**
+ * Event listener handler for card photo
+ */
+function handleCardClick (popup) {
+  return function (photoAttributes, placeNameText) {
+           return () => {popup.open(photoAttributes, placeNameText)}
+         }
+};
+
+/**
  * Adds a new place card to a section
  * @param {Object} cardData - {name: "", link: ""}
  * @param {Section} destinationSection
  */
 function addPlaceCard(cardData, destinationSection) {
   cardData.templateSelector = config.cardTemplateSelector;
+  cardData.handleCardClick = handleCardClick(photoPopup);
   const placeCard = new Card(cardData);
   destinationSection.addItem(placeCard.generateCard());
 }
@@ -132,6 +142,8 @@ function initPopup(popupId, processPopupCustom) {
   }
 }
 
+const photoPopup = new PopupWithImage(config.photoPopupTemplateSelector);
+
 //display initial cards
 const placesList = new Section({
   items: initialCards,
@@ -141,6 +153,6 @@ const placesList = new Section({
 placesList.renderItems();
 
 //prepare popups
-initPopup('#editProfile', processProfileEditPopup);
-initPopup('#addPlace', processProfileAddPopup);
-initPopup('#showPhoto', () => {});
+// initPopup('#editProfile', processProfileEditPopup);
+// initPopup('#addPlace', processProfileAddPopup);
+

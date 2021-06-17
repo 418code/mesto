@@ -1,11 +1,12 @@
-import {setElementAttributes, makeProcessShowPhotoPopup} from '../utils/utils.js';
+import {setElementAttributes} from '../utils/utils.js';
 
 export class Card {
   constructor(data) {
     this._placeNameText = data.name;
     this._imageUrl = data.link;
+    this._photoAttributes = [{src: this._imageUrl}, {alt: `фото ${this._placeNameText}`}];
     this._templateSelector = data.templateSelector;
-    this._processShowPhotoPopup = makeProcessShowPhotoPopup();
+    this._handleCardClick = data.handleCardClick;
   }
 
   /**
@@ -42,6 +43,7 @@ export class Card {
   _setEventListeners = () => {
     this._deleteButton.addEventListener('click', this._handleDeleteClick);
     this._likeButton.addEventListener('click', this._handleLikeClick);
+    this._placePhoto.addEventListener('click', this._handleCardClick(this._photoAttributes, this._placeNameText));
   }
 
   /**
@@ -52,7 +54,6 @@ export class Card {
     this._newPlaceCard = this._getCardFromTemplate();
 
     this._placePhoto = this._newPlaceCard.querySelector('.place__photo');
-    this._photoAttributes = [{src: this._imageUrl}, {alt: `фото ${this._placeNameText}`}];
     setElementAttributes(this._placePhoto, this._photoAttributes);
 
     this._placeName = this._newPlaceCard.querySelector('.place__name');
@@ -62,9 +63,6 @@ export class Card {
     this._likeButton = this._newPlaceCard.querySelector('.place__like-btn');
 
     this._setEventListeners();
-
-    //popup open button -> placePhoto
-    this._processShowPhotoPopup(this._placePhoto, this._photoAttributes, `${this._placeNameText}`);
 
     return this._newPlaceCard;
   }
