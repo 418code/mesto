@@ -26,9 +26,9 @@ const initialCards = [
 ];
 
 const config = {
-  form: 'popup__form',
-  input: 'popup__form-text',
-  submitButton: 'popup__form-submit-btn',
+  popupFormSelector: '.popup__form',
+  popupFormInputSelector: '.popup__form-text',
+  popupFormSubmitButtonSelector: '.popup__form-submit-btn',
   submitButtonDisabled: 'popup__form-submit-btn_disabled',
   transparentMuchMore: ['transparent', 'transparent_amount_much-more'],
   inputFieldError: 'popup__form-text_type_error',
@@ -41,7 +41,12 @@ const config = {
   popupPhotoDescriptionSelector: '.popup__photo-description',
   photoPopupTemplateSelector: '#showPhoto',
   profileEditPopupTemplateSelector: '#editProfile',
-  profileAddPopupTemplateSelector: '#addPlace'
+  profileAddPopupTemplateSelector: '#addPlace',
+  profileAddButtonSelector: '.profile__add-button',
+  profileInputNameName: 'profileName',
+  profileInputDescriptionName: 'profileDescription',
+  placeInputNameName: 'placeName',
+  placeInputUrlName: 'placeUrl'
 };
 
 export {initialCards, config}
