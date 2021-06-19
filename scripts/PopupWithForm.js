@@ -29,6 +29,16 @@ export default class PopupWithForm extends Popup {
   }
 
   /**
+   * Sets input values for the form
+   * @param {Object} values - {property1: "value1", property2: "value2"}
+   */
+  setInputValues(values) {
+    this._inputList.forEach(input => {
+      input.value = values[input.name];
+    });
+  }
+
+  /**
    * Sets event listeners for the popup
    */
   setEventListeners() {
@@ -43,5 +53,14 @@ export default class PopupWithForm extends Popup {
   close() {
     super.close();
     this._formValidator.clearForm();
+  }
+
+  /**
+   * Opens a popup with a custom action
+   * @param {Function} customOpenCallback
+   */
+  open(customOpenCallback) {
+    customOpenCallback();
+    super.open();
   }
 }
