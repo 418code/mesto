@@ -23,6 +23,10 @@ JavaScript
 - close popup with a click on overlay and with the Esc key
 - refactor card logic with Card class: commit 556cbbb
 - refactor form validation logic with FormValidator class: commit a9a836c
+- refactor card view logic with Section class: commit d815505
+- refactor photo popup with PopupWithImage class: commit e23748f
+- refactor profile add popup with PopupWithForm class: commit e155e34
+- refactor profile edit popup with PopupWithForm and UserInfo classes: commit 9bb16e3
 
 CSS
 - responsive layout with flexbox/grid and media queries
@@ -35,6 +39,16 @@ CSS
 HTML
 - semantic tags
 - emmet abbreviations
+
+Webpack
+- use npm to install packages
+- build and dev scripts
+- development server
+- transpile JS with Babel for older browsers and auto insert script tag
+- import images and fonts
+- use HtmlWebpackPlugin to process HTML and load images with lodash
+- use CleanWebpackPlugin to empty the dist folder on build
+- process CSS with MiniCssExtractPlugin, css-loader, postcss-loader, autoprefixer, and cssnano
 
 Figma
 - [Sprint 4 Figma design](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)

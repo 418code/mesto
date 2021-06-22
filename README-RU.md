@@ -23,6 +23,10 @@ JavaScript
 - закрытие попапа по клику на оверлей и по нажатию на клавишу Esc
 - рефакторинг логики создания карточки классом Card: коммит 556cbbb
 - рефакторинг логики валидации формы классом FormValidator: коммит a9a836c
+- рефакторинг логики показа карточек классом Section: commit d815505
+- рефакторинг логики фото попапа классом PopupWithImage: commit e23748f
+- рефакторинг логики попапа добавления карточки классом PopupWithForm: commit e155e34
+- рефакторинг логики попапа редактирования профиля классами PopupWithForm и UserInfo: commit 9bb16e3
 
 CSS
 - адаптивная вёрстка с flexbox/grid и media запросами
@@ -35,6 +39,17 @@ CSS
 HTML
 - семантические теги
 - emmet аббревиации
+
+Webpack
+- npm для установки пакетов и запуска скриптов
+- скрипты build и dev
+- сервер разработки
+- транспиляция JS с помощью Babel для старых браузеров и авто подставка тега script
+- импорт изображений и шрифтов
+- HtmlWebpackPlugin для обработки HTML с lodash шаблонами для изображений
+- очистка папки dist с помощью CleanWebpackPlugin
+- обработка CSS с помощью MiniCssExtractPlugin, css-loader, postcss-loader, autoprefixer, и cssnano
+
 
 Figma
 - [Макет 4 спринта](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
