@@ -1,9 +1,9 @@
 import {config} from '../utils/constants.js';
 
 export default class UserInfo {
-  constructor(profileName, profileDescription) {
-    this._profileName = profileName;
-    this._profileDescription = profileDescription;
+  constructor(profileNameSelector, profileDescriptionSelector) {
+    this._profileName = document.querySelector(profileNameSelector);
+    this._profileDescription = document.querySelector(profileDescriptionSelector);
   }
 
   /**

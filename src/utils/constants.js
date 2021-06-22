@@ -46,7 +46,9 @@ const config = {
   profileInputNameName: 'profileName',
   profileInputDescriptionName: 'profileDescription',
   placeInputNameName: 'placeName',
-  placeInputUrlName: 'placeUrl'
+  placeInputUrlName: 'placeUrl',
+  profileNameSelector: '.profile__name',
+  profileDescriptionSelector: '.profile__description',
 };
 
 export {initialCards, config}

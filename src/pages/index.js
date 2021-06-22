@@ -67,9 +67,7 @@ const profileAddButton = document.querySelector(config.profileAddButtonSelector)
 profileAddButton.addEventListener('click', () => profileAddPopup.open(() => {}));
 
 //set up profile info logic
-const profileName = document.querySelector('.profile__name');
-const profileDescription = document.querySelector('.profile__description');
-const profileInfo = new UserInfo(profileName, profileDescription);
+const profileInfo = new UserInfo(config.profileNameSelector, config.profileDescriptionSelector);
 
 
 const profileEditSubmitHandler = makeFormSubmitHandler(
