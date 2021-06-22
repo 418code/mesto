@@ -1,2 +1,4 @@
 makefiles.sh
 images/resize_multi.sh
+node_modules
+dist

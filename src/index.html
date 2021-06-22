@@ -6,19 +6,18 @@
   <meta name="description" content="Веб приложение учебный проект программы веб разработки Яндекс Практикума">
   <meta name="author" content="Максим Толстокорый">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./pages/index.css">
   <title>Место</title>
 </head>
 <body class="body">
   <div class="page body__element">
     <header class="header body__element">
-      <img src="./images/logo.svg" alt="логотип mesto Russia" class="header__logo">
+      <img src="<%=require('./images/logo.svg')%>" alt="логотип mesto Russia" class="header__logo">
     </header>
     <main class="content body__element">
       <section class="profile body__element">
         <div class="profile__pic-info-container">
           <div class="profile__pic-container">
-            <img src="./images/profile_pic.jpg" alt="фото аккаунта" class="profile__pic">
+            <img src="<%=require('./images/profile_pic.jpg')%>" alt="фото аккаунта" class="profile__pic">
           </div>
           <div class="profile__info">
             <div class="profile__name-edit-wrap">
@@ -85,6 +84,5 @@
       </div>
     </li>
   </template>
-  <script type="module" src="./scripts/index.js"></script>
 </body>
 </html>
