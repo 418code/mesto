@@ -1,20 +1,13 @@
 import Popup from './Popup.js';
-import FormValidator from './FormValidator.js';
 import {config} from '../utils/constants.js';
 
 export default class PopupWithForm extends Popup {
-  constructor(popupSelector, formSubmitCallback) {
+  constructor({ popupSelector, formSubmitCallback}) {
     super(popupSelector);
     this._popupForm = this._popup.querySelector(config.popupFormSelector);
-    this._formSubmitButton = this._popupForm.querySelector(config.popupFormSubmitButtonSelector);
-
     this._inputList = this._popupForm.querySelectorAll(config.popupFormInputSelector);
     this._formValues = {};
     this._formSubmitCallback = formSubmitCallback(this._formValues).bind(this);
-
-
-    this._formValidator = new FormValidator(config, this._popupForm);
-    this._formValidator.enableValidation();
     this.setEventListeners();
   }
 
@@ -43,8 +36,9 @@ export default class PopupWithForm extends Popup {
    */
   setEventListeners() {
     super.setEventListeners();
-    this._formSubmitButton.addEventListener('click', () => this._getInputValues());
-    this._popupForm.addEventListener('submit', this._formSubmitCallback);
+    this._popupForm.addEventListener('submit', (evt) => {
+      this._getInputValues();
+      this._formSubmitCallback(evt)});
   }
 
   /**
@@ -52,7 +46,7 @@ export default class PopupWithForm extends Popup {
    */
   close() {
     super.close();
-    this._formValidator.clearForm();
+    this._popupForm.reset();
   }
 
   /**
@@ -62,5 +56,13 @@ export default class PopupWithForm extends Popup {
   open(customOpenCallback) {
     customOpenCallback();
     super.open();
+  }
+
+  /**
+   * Gets popup form
+   * @returns {HTMLElement}
+   */
+   getForm() {
+    return this._popupForm;
   }
 }

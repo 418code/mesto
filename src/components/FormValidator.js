@@ -86,10 +86,9 @@ export default class FormValidator {
   }
 
   /**
-   * Clears the form
+   * Clears the form validation
    */
-  clearForm = () => {
-    this._form.reset();
+  clearFormValidation = () => {
     this._hideErrorAll();
     this._disableSubmitButton();
   }

@@ -3,6 +3,7 @@ import {initialCards, config} from '../utils/constants.js';
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import FormValidator from '../components/FormValidator.js';
 import UserInfo from '../components/UserInfo.js';
 import './index.css';
 
@@ -62,9 +63,29 @@ const profileAddSubmitHandler = makeFormSubmitHandler(
   (formData) => addPlaceCard({ name: formData[config.placeInputNameName], link: formData[config.placeInputUrlName] }, placesList)
 );
 
-const profileAddPopup = new PopupWithForm(config.profileAddPopupTemplateSelector, profileAddSubmitHandler);
+/**
+ * Creates enabled form validator for a given form
+ * @param {HTMLElement} form
+ * @returns {FormValidator}
+ */
+function makeEnabledValidator(form) {
+  const validator = new FormValidator(config, form);
+  validator.enableValidation();
+  return validator;
+}
+
+const profileAddPopup = new PopupWithForm({
+  popupSelector: config.profileAddPopupTemplateSelector,
+  formSubmitCallback: profileAddSubmitHandler });
+
+const profileAddPopupValidator = makeEnabledValidator(profileAddPopup.getForm());
+
 const profileAddButton = document.querySelector(config.profileAddButtonSelector);
-profileAddButton.addEventListener('click', () => profileAddPopup.open(() => {}));
+profileAddButton.addEventListener('click',
+ () => profileAddPopup.open(
+   () => profileAddPopupValidator.clearFormValidation()
+  )
+);
 
 //set up profile info logic
 const profileInfo = new UserInfo(config.profileNameSelector, config.profileDescriptionSelector);
@@ -74,6 +95,17 @@ const profileEditSubmitHandler = makeFormSubmitHandler(
   (formData) => profileInfo.setUserInfo({ name: formData[config.profileInputNameName], description: formData[config.profileInputDescriptionName] })
 );
 
-const profileEditPopup = new PopupWithForm(config.profileEditPopupTemplateSelector, profileEditSubmitHandler);
+const profileEditPopup = new PopupWithForm({
+  popupSelector: config.profileEditPopupTemplateSelector,
+  formSubmitCallback: profileEditSubmitHandler });
+
+const profileEditPopupValidator = makeEnabledValidator(profileEditPopup.getForm());
 const profileEditButton = document.querySelector('.profile__edit-button');
-profileEditButton.addEventListener('click', () => profileEditPopup.open(() => profileEditPopup.setInputValues(profileInfo.getUserInfo())));
+profileEditButton.addEventListener('click',
+  () => profileEditPopup.open(
+    () => {
+      profileEditPopupValidator.clearFormValidation();
+      profileEditPopup.setInputValues(profileInfo.getUserInfo());
+    }
+  )
+);
