@@ -14,6 +14,7 @@ module.exports = {
     publicPath: '' //ex. local /assets folder for dev and CDN /assets folder for prod
   },
   mode: 'development',
+  devtool: 'inline-source-map',
   devServer: {
     contentBase: path.resolve(__dirname, './dist'), //only exists in devServer for serving static files
     compress: true, //use gzip compression for everything served
