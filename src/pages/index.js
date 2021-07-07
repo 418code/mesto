@@ -6,6 +6,7 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import FormValidator from '../components/FormValidator.js';
 import UserInfo from '../components/UserInfo.js';
 import './index.css';
+import Api from '../components/Api.js';
 
 /**
  * Event listener handler for card photo
@@ -87,25 +88,49 @@ profileAddButton.addEventListener('click',
   )
 );
 
+//prepare api object for use
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-25/',
+  headers: {
+    authorization: 'd8d84bac-32d7-42f9-a622-bbe14f1aa9f5',
+    'Content-Type': 'application/json'
+  }
+});
+
 //set up profile info logic
-const profileInfo = new UserInfo(config.profileNameSelector, config.profileDescriptionSelector);
+
+api.getUserInfo()
+  .then(info => {
+    const profileInfo = new UserInfo(config.profileNameSelector, config.profileDescriptionSelector);
+
+    profileInfo.setUserInfo({ name: info.name, description: info.about });
+
+    const profileEditSubmitHandler = makeFormSubmitHandler(
+      (formData) => {
+        api.setUserInfo({ name: formData[config.profileInputNameName], about: formData[config.profileInputDescriptionName] })
+        .then(info => {
+          profileInfo.setUserInfo({ name: formData[config.profileInputNameName], description: formData[config.profileInputDescriptionName] });
+        })
+        .catch(err => console.log(err));
+      }
+    );
+
+    const profileEditPopup = new PopupWithForm({
+      popupSelector: config.profileEditPopupTemplateSelector,
+      formSubmitCallback: profileEditSubmitHandler });
+
+    const profileEditPopupValidator = makeEnabledValidator(profileEditPopup.getForm());
+    const profileEditButton = document.querySelector('.profile__edit-button');
+    profileEditButton.addEventListener('click',
+      () => profileEditPopup.open(
+        () => {
+          profileEditPopupValidator.clearFormValidation();
+          profileEditPopup.setInputValues(profileInfo.getUserInfo());
+        }
+      )
+    );
+  })
+  .catch(err => console.log(err));
 
 
-const profileEditSubmitHandler = makeFormSubmitHandler(
-  (formData) => profileInfo.setUserInfo({ name: formData[config.profileInputNameName], description: formData[config.profileInputDescriptionName] })
-);
 
-const profileEditPopup = new PopupWithForm({
-  popupSelector: config.profileEditPopupTemplateSelector,
-  formSubmitCallback: profileEditSubmitHandler });
-
-const profileEditPopupValidator = makeEnabledValidator(profileEditPopup.getForm());
-const profileEditButton = document.querySelector('.profile__edit-button');
-profileEditButton.addEventListener('click',
-  () => profileEditPopup.open(
-    () => {
-      profileEditPopupValidator.clearFormValidation();
-      profileEditPopup.setInputValues(profileInfo.getUserInfo());
-    }
-  )
-);
