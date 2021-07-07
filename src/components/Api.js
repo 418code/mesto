@@ -11,13 +11,13 @@ export default class Api {
    * @param {String} body - is added with some methods
    * @returns {Promise}
    */
-  _fetchPath(path, method, body = '') {
+  _fetchPath(path, method, body = {}) {
     const fetchObject = {
       method: method,
       headers: this.headers,
     }
     if (method === 'POST' || method === 'PATCH')
-      fetchObject['body'] = body;
+      fetchObject['body'] = JSON.stringify(body);
 
     return fetch(`${this.baseUrl}${path}`, fetchObject)
     .then(res => {
@@ -41,7 +41,7 @@ export default class Api {
    * @returns {Promise}
    */
   setUserInfo({ name, about }) {
-    return this._fetchPath('users/me', 'PATCH', JSON.stringify({name: name, about: about}));
+    return this._fetchPath('users/me', 'PATCH', {name: name, about: about});
   }
 
   /**
@@ -50,5 +50,14 @@ export default class Api {
    */
   getInitialCards() {
     return this._fetchPath('cards', 'GET');
+  }
+
+  /**
+   * Adds a new card to the server
+   * @param {Object} object - {name, link}
+   * @returns {Promise} - contains new card data
+   */
+  addCard({ name, link }) {
+    return this._fetchPath('cards', 'POST', {name: name, link: link});
   }
 }

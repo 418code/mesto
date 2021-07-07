@@ -18,8 +18,8 @@ function handleCardClick (popup) {
 };
 
 /**
- * Adds a new place card to a section
- * @param {Object} cardData - {name: "", link: ""}
+ * Adds a place card to the page
+ * @param {Object} cardData - {name: "", link: "", ...}
  * @param {Section} destinationSection
  */
 function addPlaceCard(cardData, destinationSection) {
@@ -27,6 +27,18 @@ function addPlaceCard(cardData, destinationSection) {
   cardData.handleCardClick = handleCardClick(photoPopup);
   const placeCard = new Card(cardData);
   destinationSection.addItem(placeCard.generateCard());
+}
+
+/**
+ * Adds a new place card to the server and page
+ * @param {Object} cardData - {name: "", link: ""}
+ * @param {Section} destinationSection
+ * @param {Api} api
+ */
+function addPlaceCardAsync(cardData, destinationSection, api) {
+  api.addCard(cardData)
+  .then(apiCardData => addPlaceCard(apiCardData, destinationSection))
+  .catch(err => console.log(err));
 }
 
 const photoPopup = new PopupWithImage(config.photoPopupTemplateSelector);
@@ -52,10 +64,6 @@ function makeFormSubmitHandler(callback) {
   return handler;
 }
 
-const profileAddSubmitHandler = makeFormSubmitHandler(
-  (formData) => addPlaceCard({ name: formData[config.placeInputNameName], link: formData[config.placeInputUrlName] }, placesList)
-);
-
 /**
  * Creates enabled form validator for a given form
  * @param {HTMLElement} form
@@ -66,19 +74,6 @@ function makeEnabledValidator(form) {
   validator.enableValidation();
   return validator;
 }
-
-const profileAddPopup = new PopupWithForm({
-  popupSelector: config.profileAddPopupTemplateSelector,
-  formSubmitCallback: profileAddSubmitHandler });
-
-const profileAddPopupValidator = makeEnabledValidator(profileAddPopup.getForm());
-
-const profileAddButton = document.querySelector(config.profileAddButtonSelector);
-profileAddButton.addEventListener('click',
- () => profileAddPopup.open(
-   () => profileAddPopupValidator.clearFormValidation()
-  )
-);
 
 //prepare api object for use
 const api = new Api({
@@ -124,11 +119,30 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
 
     //display initial cards
     const placesList = new Section({
-      items: cards,
+      items: cards.reverse(),
       renderer: (item) => addPlaceCard(item, placesList)
     }, `.${config.placesList}`);
 
     placesList.renderItems();
+
+    //set up card addition logic
+    const profileAddSubmitHandler = makeFormSubmitHandler(
+      (formData) => addPlaceCardAsync({ name: formData[config.placeInputNameName], link: formData[config.placeInputUrlName] }, placesList, api)
+    );
+
+    const profileAddPopup = new PopupWithForm({
+      popupSelector: config.profileAddPopupTemplateSelector,
+      formSubmitCallback: profileAddSubmitHandler });
+
+    const profileAddPopupValidator = makeEnabledValidator(profileAddPopup.getForm());
+
+    const profileAddButton = document.querySelector(config.profileAddButtonSelector);
+    profileAddButton.addEventListener('click',
+     () => profileAddPopup.open(
+       () => profileAddPopupValidator.clearFormValidation()
+      )
+    );
+
   })
   .catch(err => console.log(err));
 
