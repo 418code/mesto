@@ -43,4 +43,12 @@ export default class Api {
   setUserInfo({ name, about }) {
     return this._fetchPath('users/me', 'PATCH', JSON.stringify({name: name, about: about}));
   }
+
+  /**
+   * Loads cards from the server
+   * @returns {Promise}
+   */
+  getInitialCards() {
+    return this._fetchPath('cards', 'GET');
+  }
 }

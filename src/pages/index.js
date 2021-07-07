@@ -1,5 +1,5 @@
 import {Card} from '../components/Card.js';
-import {initialCards, config} from '../utils/constants.js';
+import {config} from '../utils/constants.js';
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
@@ -30,14 +30,6 @@ function addPlaceCard(cardData, destinationSection) {
 }
 
 const photoPopup = new PopupWithImage(config.photoPopupTemplateSelector);
-
-//display initial cards
-const placesList = new Section({
-  items: initialCards,
-  renderer: (item) => addPlaceCard(item, placesList)
-}, `.${config.placesList}`);
-
-placesList.renderItems();
 
 /**
  * Creates a form submit handler with a given callback
@@ -97,10 +89,10 @@ const api = new Api({
   }
 });
 
-//set up profile info logic
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([info, cards]) => {
 
-api.getUserInfo()
-  .then(info => {
+    //set up profile info logic
     const profileInfo = new UserInfo(config.profileNameSelector, config.profileDescriptionSelector);
 
     profileInfo.setUserInfo({ name: info.name, description: info.about });
@@ -129,6 +121,14 @@ api.getUserInfo()
         }
       )
     );
+
+    //display initial cards
+    const placesList = new Section({
+      items: cards,
+      renderer: (item) => addPlaceCard(item, placesList)
+    }, `.${config.placesList}`);
+
+    placesList.renderItems();
   })
   .catch(err => console.log(err));
 
