@@ -60,4 +60,13 @@ export default class Api {
   addCard({ name, link }) {
     return this._fetchPath('cards', 'POST', {name: name, link: link});
   }
+
+  /**
+   * Removes card from server
+   * @param {String} cardId
+   * @returns {Promise}
+   */
+  deleteCard(cardId) {
+    return this._fetchPath(`cards/${cardId}`, 'DELETE')
+  }
 }

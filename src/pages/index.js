@@ -22,9 +22,11 @@ function handleCardClick (popup) {
  * @param {Object} cardData - {name: "", link: "", ...}
  * @param {Section} destinationSection
  */
-function addPlaceCard(cardData, destinationSection) {
+function addPlaceCard(cardData, destinationSection, api, userInfo) {
   cardData.templateSelector = config.cardTemplateSelector;
   cardData.handleCardClick = handleCardClick(photoPopup);
+  cardData.cardDeleteCallback = (cardId) => api.deleteCard(cardId);
+  cardData.userId = userInfo.getUserInfo().userId;
   const placeCard = new Card(cardData);
   destinationSection.addItem(placeCard.generateCard());
 }
@@ -35,9 +37,9 @@ function addPlaceCard(cardData, destinationSection) {
  * @param {Section} destinationSection
  * @param {Api} api
  */
-function addPlaceCardAsync(cardData, destinationSection, api) {
+function addPlaceCardAsync(cardData, destinationSection, api, userInfo) {
   api.addCard(cardData)
-  .then(apiCardData => addPlaceCard(apiCardData, destinationSection))
+  .then(apiCardData => addPlaceCard(apiCardData, destinationSection, api, userInfo))
   .catch(err => console.log(err));
 }
 
@@ -88,7 +90,9 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then(([info, cards]) => {
 
     //set up profile info logic
-    const profileInfo = new UserInfo(config.profileNameSelector, config.profileDescriptionSelector);
+    info.profileNameSelector = config.profileNameSelector;
+    info.profileDescriptionSelector = config.profileDescriptionSelector;
+    const profileInfo = new UserInfo(info);
 
     profileInfo.setUserInfo({ name: info.name, description: info.about });
 
@@ -120,14 +124,15 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     //display initial cards
     const placesList = new Section({
       items: cards.reverse(),
-      renderer: (item) => addPlaceCard(item, placesList)
+      renderer: (item) => addPlaceCard(item, placesList, api, profileInfo)
     }, `.${config.placesList}`);
 
     placesList.renderItems();
 
     //set up card addition logic
     const profileAddSubmitHandler = makeFormSubmitHandler(
-      (formData) => addPlaceCardAsync({ name: formData[config.placeInputNameName], link: formData[config.placeInputUrlName] }, placesList, api)
+      (formData) =>
+        addPlaceCardAsync({ name: formData[config.placeInputNameName], link: formData[config.placeInputUrlName] }, placesList, api, profileInfo)
     );
 
     const profileAddPopup = new PopupWithForm({

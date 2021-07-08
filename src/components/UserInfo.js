@@ -1,9 +1,10 @@
 import {config} from '../utils/constants.js';
 
 export default class UserInfo {
-  constructor(profileNameSelector, profileDescriptionSelector) {
-    this._profileName = document.querySelector(profileNameSelector);
-    this._profileDescription = document.querySelector(profileDescriptionSelector);
+  constructor(info) {
+    this._profileName = document.querySelector(info.profileNameSelector);
+    this._profileDescription = document.querySelector(info.profileDescriptionSelector);
+    this._id = info._id;
   }
 
   /**
@@ -11,7 +12,9 @@ export default class UserInfo {
    * @returns {Object} - {[config.profileInputNameName]: "value", [config.profileInputDescriptionName]: "value"}
    */
   getUserInfo() {
-    return {[config.profileInputNameName]: this._profileName.textContent, [config.profileInputDescriptionName]: this._profileDescription.textContent};
+    return {[config.profileInputNameName]: this._profileName.textContent,
+            [config.profileInputDescriptionName]: this._profileDescription.textContent,
+            userId: this._id};
   }
 
   /**

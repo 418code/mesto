@@ -7,6 +7,10 @@ export class Card {
     this._photoAttributes = [{src: this._imageUrl}, {alt: `фото ${this._placeNameText}`}];
     this._templateSelector = data.templateSelector;
     this._handleCardClick = data.handleCardClick;
+    this._cardDeleteCallback = data.cardDeleteCallback;
+    this._owner = data.owner;
+    this._id = data._id;
+    this._userId = data.userId;
   }
 
   /**
@@ -26,8 +30,14 @@ export class Card {
    * Event listener handler for delete button
    */
   _handleDeleteClick = () => {
-    this._newPlaceCard.remove();
-    this._newPlaceCard = null;
+    //remove card on the server
+    this._cardDeleteCallback(this._id)
+    .then(res => {
+      //remove card on the page
+      this._newPlaceCard.remove();
+      this._newPlaceCard = null;
+    })
+    .catch(err => console.log(err));
   }
 
   /**
@@ -41,7 +51,8 @@ export class Card {
    * Sets event listeners for card buttons
    */
   _setEventListeners = () => {
-    this._deleteButton.addEventListener('click', this._handleDeleteClick);
+    if (this._userId === this._owner._id)
+      this._deleteButton.addEventListener('click', this._handleDeleteClick);
     this._likeButton.addEventListener('click', this._handleLikeClick);
     this._placePhoto.addEventListener('click', this._handleCardClick(this._photoAttributes, this._placeNameText));
   }
@@ -59,7 +70,13 @@ export class Card {
     this._placeName = this._newPlaceCard.querySelector('.place__name');
     this._placeName.textContent = `${this._placeNameText}`;
 
+
     this._deleteButton = this._newPlaceCard.querySelector('.place__remove-btn');
+    if (this._userId != this._owner._id) {
+      this._deleteButton.remove();
+      this._deleteButton = null;
+    }
+
     this._likeButton = this._newPlaceCard.querySelector('.place__like-btn');
 
     this._setEventListeners();
