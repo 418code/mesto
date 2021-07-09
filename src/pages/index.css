@@ -61,6 +61,7 @@
 @import url(../blocks/popup/__container-close-btn/popup__container-close-btn.css);
 @import url(../blocks/popup/__form/popup__form.css);
 @import url(../blocks/popup/__form-title/popup__form-title.css);
+@import url(../blocks/popup/__form-title/_onlytitle/popup__form-title_onlytitle.css);
 @import url(../blocks/popup/__form-text/popup__form-text.css);
 @import url(../blocks/popup/__form-text/_type/popup__form-text_type_error.css);
 @import url(../blocks/popup/__form-text-error/popup__form-text-error.css);

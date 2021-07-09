@@ -27,17 +27,25 @@ export class Card {
   }
 
   /**
-   * Event listener handler for delete button
+   * Deletes card locally, if api delete call is successful
+   * @param {Promise} promise - returned by a call to Api.deleteCard
    */
-  _handleDeleteClick = () => {
-    //remove card on the server
-    this._cardDeleteCallback(this._id)
+  _localCardDeleteCallback = (promise) => {
+    promise
     .then(res => {
-      //remove card on the page
+      //remove card on the page if api promise resolved and card is deleted on the server
       this._newPlaceCard.remove();
       this._newPlaceCard = null;
     })
     .catch(err => console.log(err));
+  }
+
+  /**
+   * Event listener handler for delete button
+   */
+  _handleDeleteClick = () => {
+    //combines confirm popup logic, api delete logic, and local delete logic
+    this._cardDeleteCallback(this._id, this._localCardDeleteCallback);
   }
 
   /**

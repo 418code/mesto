@@ -15,6 +15,7 @@ const config = {
   photoPopupTemplateSelector: '#showPhoto',
   profileEditPopupTemplateSelector: '#editProfile',
   profileAddPopupTemplateSelector: '#addPlace',
+  cardDeleteConfirmPopupTemplateSelector: '#confirmDelete',
   profileAddButtonSelector: '.profile__add-button',
   profileInputNameName: 'profileName',
   profileInputDescriptionName: 'profileDescription',

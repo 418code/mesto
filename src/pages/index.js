@@ -7,6 +7,7 @@ import FormValidator from '../components/FormValidator.js';
 import UserInfo from '../components/UserInfo.js';
 import './index.css';
 import Api from '../components/Api.js';
+import PopupConfirm from '../components/PopupConfirm.js';
 
 /**
  * Event listener handler for card photo
@@ -22,10 +23,13 @@ function handleCardClick (popup) {
  * @param {Object} cardData - {name: "", link: "", ...}
  * @param {Section} destinationSection
  */
-function addPlaceCard(cardData, destinationSection, api, userInfo) {
+function addPlaceCard(cardData, destinationSection, api, userInfo, deleteConfirmPopup) {
   cardData.templateSelector = config.cardTemplateSelector;
   cardData.handleCardClick = handleCardClick(photoPopup);
-  cardData.cardDeleteCallback = (cardId) => api.deleteCard(cardId);
+  cardData.cardDeleteCallback = (cardId, localCardDeleteCallback) => {
+    deleteConfirmPopup.setSubmitHandler(() => localCardDeleteCallback(api.deleteCard(cardId)));
+    deleteConfirmPopup.open();
+  };
   cardData.userId = userInfo.getUserInfo().userId;
   const placeCard = new Card(cardData);
   destinationSection.addItem(placeCard.generateCard());
@@ -37,9 +41,9 @@ function addPlaceCard(cardData, destinationSection, api, userInfo) {
  * @param {Section} destinationSection
  * @param {Api} api
  */
-function addPlaceCardAsync(cardData, destinationSection, api, userInfo) {
+function addPlaceCardAsync(cardData, destinationSection, api, userInfo, deleteConfirmPopup) {
   api.addCard(cardData)
-  .then(apiCardData => addPlaceCard(apiCardData, destinationSection, api, userInfo))
+  .then(apiCardData => addPlaceCard(apiCardData, destinationSection, api, userInfo, deleteConfirmPopup))
   .catch(err => console.log(err));
 }
 
@@ -121,10 +125,13 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
       )
     );
 
+    //prepare card delete popup
+    const cardDeleteConfirmPopup = new PopupConfirm(config.cardDeleteConfirmPopupTemplateSelector);
+
     //display initial cards
     const placesList = new Section({
       items: cards.reverse(),
-      renderer: (item) => addPlaceCard(item, placesList, api, profileInfo)
+      renderer: (item) => addPlaceCard(item, placesList, api, profileInfo, cardDeleteConfirmPopup)
     }, `.${config.placesList}`);
 
     placesList.renderItems();
@@ -132,7 +139,12 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     //set up card addition logic
     const profileAddSubmitHandler = makeFormSubmitHandler(
       (formData) =>
-        addPlaceCardAsync({ name: formData[config.placeInputNameName], link: formData[config.placeInputUrlName] }, placesList, api, profileInfo)
+        addPlaceCardAsync({ name: formData[config.placeInputNameName],
+                            link: formData[config.placeInputUrlName] },
+                            placesList,
+                            api,
+                            profileInfo,
+                            cardDeleteConfirmPopup)
     );
 
     const profileAddPopup = new PopupWithForm({
