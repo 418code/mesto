@@ -69,4 +69,22 @@ export default class Api {
   deleteCard(cardId) {
     return this._fetchPath(`cards/${cardId}`, 'DELETE')
   }
+
+  /**
+   * Adds a like to a card
+   * @param {String} cardId
+   * @returns {Promise}
+   */
+  likeCard(cardId) {
+    return this._fetchPath(`cards/likes/${cardId}`, 'PUT');
+  }
+
+  /**
+   * Removes a card's like from the server
+   * @param {String} cardId
+   * @returns {Promise}
+   */
+  unlikeCard(cardId) {
+    return this._fetchPath(`cards/likes/${cardId}`, 'DELETE');
+  }
 }

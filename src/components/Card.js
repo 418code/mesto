@@ -13,6 +13,7 @@ export class Card {
     this._id = data._id;
     this._userId = data.userId;
     this._likes = data.likes;
+    this._likeCallback = data.cardLikeCallback;
   }
 
   /**
@@ -54,7 +55,29 @@ export class Card {
    * Event listener handler for like button
    */
   _handleLikeClick = () => {
+    this._likeCallback(this._id, this._likeButton.classList.contains(config.placeLikeBtnSelectedClass))
+    .then(res => {
+      this._toggleLikeButton();
+      this._likes = res.likes;
+      this._setNumberOfLikes();
+    })
+    .catch(err => console.log(err));
+  }
+
+  /**
+   * Switches like button between on and off visual state
+   */
+  _toggleLikeButton = () => {
     this._likeButton.classList.toggle(config.placeLikeBtnSelectedClass);
+  }
+
+  /**
+   * Turns on like button if the card was liked by this user
+   */
+  _setInitialLike = () => {
+    const liked = this._likes.find((likeObj) => likeObj._id === this._userId);
+    if (liked)
+      this._toggleLikeButton();
   }
 
   /**
@@ -97,6 +120,7 @@ export class Card {
     this._likeButton = this._newPlaceCard.querySelector(config.placeLikeBtnSelector);
     this._numberOfLikes = this._newPlaceCard.querySelector(config.placeNumberOfLikesSelector);
     this._setNumberOfLikes();
+    this._setInitialLike();
 
     this._setEventListeners();
 

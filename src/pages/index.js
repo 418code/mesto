@@ -30,6 +30,12 @@ function addPlaceCard(cardData, destinationSection, api, userInfo, deleteConfirm
     deleteConfirmPopup.setSubmitHandler(() => localCardDeleteCallback(api.deleteCard(cardId)));
     deleteConfirmPopup.open();
   };
+  cardData.cardLikeCallback = (cardId, liked) => {
+    if (liked)
+      return api.unlikeCard(cardId);
+    else
+      return api.likeCard(cardId);
+  };
   cardData.userId = userInfo.getUserInfo().userId;
   const placeCard = new Card(cardData);
   destinationSection.addItem(placeCard.generateCard());
