@@ -1,7 +1,4 @@
 .place__remove-btn {
-  position: absolute;
-  top: 18px;
-  right: 15px;
   width: 18px;
   height: 19.3px;
   background: url(../../../images/trash.svg) no-repeat center;
@@ -9,4 +6,7 @@
   border: none;
   z-index: 1;
   cursor: pointer;
+  grid-column-start: 19;
+  grid-row: 2/3;
+  justify-self: center;
 }

@@ -43,10 +43,10 @@
 @import url(../blocks/place/place.css);
 @import url(../blocks/place/__remove-btn/place__remove-btn.css);
 @import url(../blocks/place/__photo/place__photo.css);
-@import url(../blocks/place/__name-like-container/place__name-like-container.css);
 @import url(../blocks/place/__name/place__name.css);
 @import url(../blocks/place/__like-btn/place__like-btn.css);
 @import url(../blocks/place/__like-btn/_selected/place__like-btn_selected.css);
+@import url(../blocks/place/__number-of-likes/place__number-of-likes.css);
 
 /* footer section */
 @import url(../blocks/footer/footer.css);

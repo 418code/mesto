@@ -11,6 +11,7 @@ export class Card {
     this._owner = data.owner;
     this._id = data._id;
     this._userId = data.userId;
+    this._likes = data.likes;
   }
 
   /**
@@ -66,6 +67,13 @@ export class Card {
   }
 
   /**
+   * Sets card's number of likes
+   */
+  _setNumberOfLikes = () => {
+    this._numberOfLikes.textContent = this._likes.length;
+  }
+
+  /**
    * Creates a complete place card
    * @returns {HTMLElement}
    */
@@ -86,6 +94,8 @@ export class Card {
     }
 
     this._likeButton = this._newPlaceCard.querySelector('.place__like-btn');
+    this._numberOfLikes = this._newPlaceCard.querySelector('.place__number-of-likes');
+    this._setNumberOfLikes();
 
     this._setEventListeners();
 

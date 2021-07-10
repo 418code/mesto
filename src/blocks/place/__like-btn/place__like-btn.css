@@ -1,10 +1,13 @@
 .place__like-btn {
   padding: 0;
-  margin-right: 2px;
+  margin-right: 9px;
   width: 22px;
   height: 19px;
   background: #fff no-repeat center url(../../../images/heart_button.svg);
   cursor: pointer;
   border: none;
   outline: none;
+  grid-column-start: 19;
+  grid-row: 18;
+  justify-self: center;
 }

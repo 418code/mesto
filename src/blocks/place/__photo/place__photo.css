@@ -4,4 +4,6 @@
   padding: 0;
   border-radius: 10px 10px 0 0;
   cursor: pointer;
+  grid-column: 1/-1;
+  grid-row: 1/17;
 }
