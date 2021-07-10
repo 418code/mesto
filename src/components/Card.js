@@ -1,4 +1,5 @@
 import {setElementAttributes} from '../utils/utils.js';
+import {config} from '../utils/constants.js';
 
 export class Card {
   constructor(data) {
@@ -22,7 +23,7 @@ export class Card {
     const cardElement = document
       .querySelector(this._templateSelector)
       .content
-      .querySelector('.place')
+      .querySelector(config.placeCardSelector)
       .cloneNode(true);
     return cardElement;
   }
@@ -53,7 +54,7 @@ export class Card {
    * Event listener handler for like button
    */
   _handleLikeClick = () => {
-    this._likeButton.classList.toggle('place__like-btn_selected');
+    this._likeButton.classList.toggle(config.placeLikeBtnSelectedClass);
   }
 
   /**
@@ -80,21 +81,21 @@ export class Card {
   generateCard = () => {
     this._newPlaceCard = this._getCardFromTemplate();
 
-    this._placePhoto = this._newPlaceCard.querySelector('.place__photo');
+    this._placePhoto = this._newPlaceCard.querySelector(config.placePhotoSelector);
     setElementAttributes(this._placePhoto, this._photoAttributes);
 
-    this._placeName = this._newPlaceCard.querySelector('.place__name');
+    this._placeName = this._newPlaceCard.querySelector(config.placeNameSelector);
     this._placeName.textContent = `${this._placeNameText}`;
 
 
-    this._deleteButton = this._newPlaceCard.querySelector('.place__remove-btn');
+    this._deleteButton = this._newPlaceCard.querySelector(config.placeDeleteBtnSelector);
     if (this._userId != this._owner._id) {
       this._deleteButton.remove();
       this._deleteButton = null;
     }
 
-    this._likeButton = this._newPlaceCard.querySelector('.place__like-btn');
-    this._numberOfLikes = this._newPlaceCard.querySelector('.place__number-of-likes');
+    this._likeButton = this._newPlaceCard.querySelector(config.placeLikeBtnSelector);
+    this._numberOfLikes = this._newPlaceCard.querySelector(config.placeNumberOfLikesSelector);
     this._setNumberOfLikes();
 
     this._setEventListeners();
