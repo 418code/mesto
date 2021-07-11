@@ -68,8 +68,12 @@ function makeFormSubmitHandler(callback) {
    */
   const handler = function formSubmitHandler (formData) {
     return function (evt) {
+      const submitButton = evt.target.querySelector(config.popupFormSubmitButtonSelector);
+      const submitButtonOriginalText = submitButton.innerText;
+      submitButton.innerText = 'Сохранение...'
       evt.preventDefault();
       callback(formData);
+      submitButton.innerText = submitButtonOriginalText;
       this.close();
     }
   }
