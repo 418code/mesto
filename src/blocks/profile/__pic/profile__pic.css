@@ -1,3 +1,11 @@
 .profile__pic {
   max-width: 100%;
+  clip-path: circle(60px at center);
+  cursor: pointer;
+}
+
+.profile__pic:hover + .profile__avatar-edit-button {
+  visibility: visible;
+  opacity: .8;
+  transition: opacity 1.42s linear;
 }

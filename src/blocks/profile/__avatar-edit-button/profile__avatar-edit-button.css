@@ -1,0 +1,27 @@
+.profile__avatar-edit-button {
+  width: 120px;
+  height: 120px;
+  background-color: #000;
+  background-image: url(../../../images/avatar_edit_button.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 26px 26px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  clip-path: circle(60px at center);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 1.42s, visibility 0s 1.42s;
+}
+
+.profile__avatar-edit-button:hover {
+  visibility: visible;
+}

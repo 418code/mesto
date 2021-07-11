@@ -4,7 +4,9 @@ export default class UserInfo {
   constructor(info) {
     this._profileName = document.querySelector(info.profileNameSelector);
     this._profileDescription = document.querySelector(info.profileDescriptionSelector);
+    this._avatar = document.querySelector(info.profileAvatarSelector);
     this._id = info._id;
+    this.setUserAvatar(info.avatar);
   }
 
   /**
@@ -24,5 +26,13 @@ export default class UserInfo {
   setUserInfo(data) {
     this._profileName.textContent = data.name;
     this._profileDescription.textContent = data.description;
+  }
+
+  /**
+   * Sets the address of user photo
+   * @param {String} url
+   */
+  setUserAvatar(url) {
+    this._avatar.src = url;
   }
 }

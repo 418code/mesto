@@ -45,6 +45,15 @@ export default class Api {
   }
 
   /**
+   * Tries to save a link to a new user avatar to the server
+   * @param {String} url
+   * @returns {Promise}
+   */
+  setUserAvatar(url) {
+    return this._fetchPath('users/me/avatar', 'PATCH', {avatar: url});
+  }
+
+  /**
    * Loads cards from the server
    * @returns {Promise}
    */

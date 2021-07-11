@@ -34,6 +34,7 @@
 @import url(../blocks/profile/__edit-button/profile__edit-button.css);
 @import url(../blocks/profile/__description/profile__description.css);
 @import url(../blocks/profile/__add-button/profile__add-button.css);
+@import url(../blocks/profile/__avatar-edit-button/profile__avatar-edit-button.css);
 
 /* places section */
 @import url(../blocks/places/places.css);
@@ -68,6 +69,7 @@
 @import url(../blocks/popup/__form-text-error/_active/popup__form-text-error_active.css);
 @import url(../blocks/popup/__profile-name-input-error/popup__profile-name-input-error.css);
 @import url(../blocks/popup/__profile-description-input-error/popup__profile-description-input-error.css);
+@import url(../blocks/popup/__profile-avatar-url-input-error/popup__profile-avatar-url-input-error.css);
 @import url(../blocks/popup/__place-name-input-error/popup__place-name-input-error.css);
 @import url(../blocks/popup/__place-url-input-error/popup__place-url-input-error.css);
 @import url(../blocks/popup/__form-submit-btn/popup__form-submit-btn.css);

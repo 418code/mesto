@@ -102,6 +102,7 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     //set up profile info logic
     info.profileNameSelector = config.profileNameSelector;
     info.profileDescriptionSelector = config.profileDescriptionSelector;
+    info.profileAvatarSelector = config.profileAvatarSelector;
     const profileInfo = new UserInfo(info);
 
     profileInfo.setUserInfo({ name: info.name, description: info.about });
@@ -129,6 +130,28 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
           profileEditPopup.setInputValues(profileInfo.getUserInfo());
         }
       )
+    );
+
+    //prep avatar edit logic
+    const avatarEditSubmitHandler = makeFormSubmitHandler(
+      (formData) => {
+        api.setUserAvatar(formData[config.avatarEditInputName])
+        .then(result => {
+          profileInfo.setUserAvatar(formData[config.avatarEditInputName]);
+        })
+        .catch(err => console.log(err));
+      }
+    );
+
+    const avatarEditPopup = new PopupWithForm({
+      popupSelector: config.avatarEditPopupTemplateSelector,
+      formSubmitCallback: avatarEditSubmitHandler
+    });
+
+    const avatarEditPopupValidator = makeEnabledValidator(avatarEditPopup.getForm());
+    const avatarEditButton = document.querySelector(config.profileAvatarEditButtonSelector);
+    avatarEditButton.addEventListener('click',
+      () => avatarEditPopup.open( () => avatarEditPopupValidator.clearFormValidation() )
     );
 
     //prepare card delete popup
