@@ -27,58 +27,42 @@ export class Card {
       .querySelector(config.placeCardSelector)
       .cloneNode(true);
     return cardElement;
-  }
+  };
 
   /**
-   * Deletes card locally, if api delete call is successful
-   * @param {Promise} promise - returned by a call to Api.deleteCard
+   * Deletes the card from the page
    */
-  _localCardDeleteCallback = (promise) => {
-    promise
-    .then(res => {
-      //remove card on the page if api promise resolved and card is deleted on the server
-      this._newPlaceCard.remove();
-      this._newPlaceCard = null;
-    })
-    .catch(err => console.log(err));
-  }
+  delete = () => {
+    this._newPlaceCard.remove();
+    this._newPlaceCard = null;
+  };
 
   /**
    * Event listener handler for delete button
    */
   _handleDeleteClick = () => {
-    //combines confirm popup logic, api delete logic, and local delete logic
-    this._cardDeleteCallback(this._id, this._localCardDeleteCallback);
-  }
+    this._cardDeleteCallback(this, this._id);
+  };
 
   /**
    * Event listener handler for like button
    */
   _handleLikeClick = () => {
-    this._likeCallback(this._id, this._likeButton.classList.contains(config.placeLikeBtnSelectedClass))
-    .then(res => {
-      this._toggleLikeButton();
-      this._likes = res.likes;
-      this._setNumberOfLikes();
-    })
-    .catch(err => console.log(err));
-  }
+    this._likeCallback(this, this._id, this._isLiked());
+  };
 
   /**
    * Switches like button between on and off visual state
    */
-  _toggleLikeButton = () => {
+  toggleLikeButton = () => {
     this._likeButton.classList.toggle(config.placeLikeBtnSelectedClass);
-  }
+  };
 
   /**
-   * Turns on like button if the card was liked by this user
+   * Checks if the card is liked
+   * @returns {Boolean}
    */
-  _setInitialLike = () => {
-    const liked = this._likes.find((likeObj) => likeObj._id === this._userId);
-    if (liked)
-      this._toggleLikeButton();
-  }
+  _isLiked = () => this._likes.find((likeObj) => likeObj._id === this._userId);
 
   /**
    * Sets event listeners for card buttons
@@ -88,14 +72,23 @@ export class Card {
       this._deleteButton.addEventListener('click', this._handleDeleteClick);
     this._likeButton.addEventListener('click', this._handleLikeClick);
     this._placePhoto.addEventListener('click', this._handleCardClick(this._photoAttributes, this._placeNameText));
-  }
+  };
 
   /**
    * Sets card's number of likes
    */
   _setNumberOfLikes = () => {
     this._numberOfLikes.textContent = this._likes.length;
-  }
+  };
+
+  /**
+   * Updates card's likes
+   * @param {Array} likes
+   */
+  setLikes = (likes) => {
+    this._likes = likes;
+    this._setNumberOfLikes();
+  };
 
   /**
    * Creates a complete place card
@@ -120,7 +113,8 @@ export class Card {
     this._likeButton = this._newPlaceCard.querySelector(config.placeLikeBtnSelector);
     this._numberOfLikes = this._newPlaceCard.querySelector(config.placeNumberOfLikesSelector);
     this._setNumberOfLikes();
-    this._setInitialLike();
+    if (this._isLiked())
+      this.toggleLikeButton();
 
     this._setEventListeners();
 

@@ -19,6 +19,60 @@ function handleCardClick (popup) {
 };
 
 /**
+ * Creates a callback for card removal
+ * @param {Api} api
+ * @param {PopupConfirm} deleteConfirmPopup
+ * @returns {cardDeleteCallback}
+ */
+function makeCardDeleteCallback(api, deleteConfirmPopup) {
+  /**
+   * Deletes a card from the server and from the page
+   * @callback cardDeleteCallback
+   * @param {Card} card
+   * @param {String} cardId
+   */
+  const cardDeleteCallback = (card, cardId) => {
+    deleteConfirmPopup.setSubmitHandler((evt) => {
+      evt.preventDefault();
+      api.deleteCard(cardId)
+      .then(res => {
+        card.delete();
+        deleteConfirmPopup.close();
+      })
+      .catch(err => console.log(err))
+      .finally(deleteConfirmPopup.setSubmitHandler(null));
+    });
+    deleteConfirmPopup.open();
+  };
+  return cardDeleteCallback;
+}
+
+/**
+ * Creates a callback for like functionality
+ * @param {Api} api
+ * @returns {cardLikeCallback}
+ */
+function makeCardLikeCallback(api) {
+  /**
+   * Likes a card on the server and on the page
+   * @callback cardLikeCallback
+   * @param {Card} card
+   * @param {String} cardId
+   * @param {Boolean} liked
+   */
+  const cardLikeCallback = (card, cardId, liked) => {
+    const apiCallResult = liked ? api.unlikeCard(cardId) : api.likeCard(cardId);
+    apiCallResult
+    .then(res => {
+      card.toggleLikeButton();
+      card.setLikes(res.likes);
+    })
+    .catch(err => console.log(err));
+  };
+  return cardLikeCallback;
+}
+
+/**
  * Adds a place card to the page
  * @param {Object} cardData - {name: "", link: "", ...}
  * @param {Section} destinationSection
@@ -26,31 +80,11 @@ function handleCardClick (popup) {
 function addPlaceCard(cardData, destinationSection, api, userInfo, deleteConfirmPopup) {
   cardData.templateSelector = config.cardTemplateSelector;
   cardData.handleCardClick = handleCardClick(photoPopup);
-  cardData.cardDeleteCallback = (cardId, localCardDeleteCallback) => {
-    deleteConfirmPopup.setSubmitHandler(() => localCardDeleteCallback(api.deleteCard(cardId)));
-    deleteConfirmPopup.open();
-  };
-  cardData.cardLikeCallback = (cardId, liked) => {
-    if (liked)
-      return api.unlikeCard(cardId);
-    else
-      return api.likeCard(cardId);
-  };
+  cardData.cardDeleteCallback = makeCardDeleteCallback(api, deleteConfirmPopup);
+  cardData.cardLikeCallback = makeCardLikeCallback(api);
   cardData.userId = userInfo.getUserInfo().userId;
   const placeCard = new Card(cardData);
   destinationSection.addItem(placeCard.generateCard());
-}
-
-/**
- * Adds a new place card to the server and page
- * @param {Object} cardData - {name: "", link: ""}
- * @param {Section} destinationSection
- * @param {Api} api
- */
-function addPlaceCardAsync(cardData, destinationSection, api, userInfo, deleteConfirmPopup) {
-  api.addCard(cardData)
-  .then(apiCardData => addPlaceCard(apiCardData, destinationSection, api, userInfo, deleteConfirmPopup))
-  .catch(err => console.log(err));
 }
 
 const photoPopup = new PopupWithImage(config.photoPopupTemplateSelector);
@@ -62,22 +96,47 @@ const photoPopup = new PopupWithImage(config.photoPopupTemplateSelector);
  */
 function makeFormSubmitHandler(callback) {
   /**
-   * Creates a form submit handler with the given form data
+   * Creates a form submit handler with the given popup and form data
+   * @callback formSubmitHandler
+   * @param {PopupWithForm} popup
    * @param {Object} formData - {property1: "value1", property2: "value2"}
    * @returns
    */
-  const handler = function formSubmitHandler (formData) {
+  const handler = function formSubmitHandler (popup, formData) {
     return function (evt) {
-      const submitButton = evt.target.querySelector(config.popupFormSubmitButtonSelector);
-      const submitButtonOriginalText = submitButton.innerText;
-      submitButton.innerText = 'Сохранение...'
       evt.preventDefault();
-      callback(formData);
-      submitButton.innerText = submitButtonOriginalText;
-      this.close();
+      callback(popup, formData);
     }
   }
   return handler;
+}
+
+/**
+ * Creates a form submit callback for use in makeFormSubmitHandler
+ * @param {Function} apiCallback - (formData) => api.method(...) - returns a promise
+ * @param {Function} thenCallback - (formData, result) => {...} - returns nothing
+ * @returns {formSubmitCallback} form submit callback
+ */
+function makeFormSubmitCallback(apiCallback, thenCallback) {
+  /**
+   * Is called on form submit in a popup
+   * @callback formSubmitCallback
+   * @param {PopupWithForm} popup
+   * @param {Object} formData - {property1: "value1", property2: "value2"}
+   */
+  const formSubmitCallback = (popup, formData) => {
+    const submitButton = popup.getForm().querySelector(config.popupFormSubmitButtonSelector);
+    const submitButtonOriginalText = submitButton.innerText;
+    submitButton.innerText = 'Сохранение...';
+    apiCallback(formData)
+    .then(result => {
+      thenCallback(formData, result);
+      popup.close();
+    })
+    .catch(err => console.log(err))
+    .finally(submitButton.innerText = submitButtonOriginalText);
+  }
+  return formSubmitCallback;
 }
 
 /**
@@ -112,13 +171,10 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     profileInfo.setUserInfo({ name: info.name, description: info.about });
 
     const profileEditSubmitHandler = makeFormSubmitHandler(
-      (formData) => {
-        api.setUserInfo({ name: formData[config.profileInputNameName], about: formData[config.profileInputDescriptionName] })
-        .then(info => {
-          profileInfo.setUserInfo({ name: formData[config.profileInputNameName], description: formData[config.profileInputDescriptionName] });
-        })
-        .catch(err => console.log(err));
-      }
+        makeFormSubmitCallback(
+          (formData) => api.setUserInfo({ name: formData[config.profileInputNameName], about: formData[config.profileInputDescriptionName] }),
+          (formData, result) => {profileInfo.setUserInfo({ name: formData[config.profileInputNameName], description: formData[config.profileInputDescriptionName] })}
+        )
     );
 
     const profileEditPopup = new PopupWithForm({
@@ -138,13 +194,10 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
 
     //prep avatar edit logic
     const avatarEditSubmitHandler = makeFormSubmitHandler(
-      (formData) => {
-        api.setUserAvatar(formData[config.avatarEditInputName])
-        .then(result => {
-          profileInfo.setUserAvatar(formData[config.avatarEditInputName]);
-        })
-        .catch(err => console.log(err));
-      }
+      makeFormSubmitCallback(
+        (formData) => api.setUserAvatar(formData[config.avatarEditInputName]),
+        (formData, result) => {profileInfo.setUserAvatar(formData[config.avatarEditInputName])}
+      )
     );
 
     const avatarEditPopup = new PopupWithForm({
@@ -171,13 +224,11 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
 
     //set up card addition logic
     const profileAddSubmitHandler = makeFormSubmitHandler(
-      (formData) =>
-        addPlaceCardAsync({ name: formData[config.placeInputNameName],
-                            link: formData[config.placeInputUrlName] },
-                            placesList,
-                            api,
-                            profileInfo,
-                            cardDeleteConfirmPopup)
+      makeFormSubmitCallback(
+        (formData) => api.addCard({ name: formData[config.placeInputNameName],
+                                    link: formData[config.placeInputUrlName] }),
+        (formData, result) => {addPlaceCard(result, placesList, api, profileInfo, cardDeleteConfirmPopup)}
+      )
     );
 
     const profileAddPopup = new PopupWithForm({
