@@ -15,6 +15,7 @@ const config = {
   placeLikeBtnSelector: '.place__like-btn',
   placeNumberOfLikesSelector: '.place__number-of-likes',
   placeLikeBtnSelectedClass: 'place__like-btn_selected',
+  escapeKeyCode: 'Escape',
   popupCloseButtonSelector: '.popup__container-close-btn',
   popupOpenedClass: 'popup_opened',
   popupPhotoSelector: '.popup__photo',

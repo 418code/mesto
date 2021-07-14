@@ -11,7 +11,7 @@ export default class Popup {
    * @param {Event} evt
    */
   _handleEscClose = (evt) => {
-    if (evt.key === "Escape")
+    if (evt.key === config.escapeKeyCode)
       this.close();
   }
 

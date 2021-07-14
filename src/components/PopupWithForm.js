@@ -15,10 +15,7 @@ export default class PopupWithForm extends Popup {
    * Gathers the data from all form fields
    */
   _getInputValues() {
-    this._inputList.forEach(input => {
-      this._formValues[input.name] = input.value;
-    });
-    return this._formValues;
+    this._inputList.forEach(input => this._formValues[input.name] = input.value);
   }
 
   /**
