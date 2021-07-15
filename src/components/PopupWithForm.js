@@ -8,6 +8,8 @@ export default class PopupWithForm extends Popup {
     this._inputList = this._popupForm.querySelectorAll(config.popupFormInputSelector);
     this._formValues = {};
     this._formSubmitCallback = formSubmitCallback(this, this._formValues).bind(this);
+    this._submitButton = this._popup.querySelector(config.popupFormSubmitButtonSelector);
+    this._submitButtonOriginalText = this._submitButton.textContent;
     this.setEventListeners();
   }
 
@@ -61,5 +63,13 @@ export default class PopupWithForm extends Popup {
    */
    getForm() {
     return this._popupForm;
+  }
+
+  /**
+   * Switches form submit button text between original and saving
+   * @param {Boolean} saving
+   */
+  setSubmitButtonSavingText(saving) {
+    this._submitButton.textContent = saving ? config.popupWithFormSavingText : this._submitButtonOriginalText;
   }
 }

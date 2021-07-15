@@ -125,16 +125,14 @@ function makeFormSubmitCallback(apiCallback, thenCallback) {
    * @param {Object} formData - {property1: "value1", property2: "value2"}
    */
   const formSubmitCallback = (popup, formData) => {
-    const submitButton = popup.getForm().querySelector(config.popupFormSubmitButtonSelector);
-    const submitButtonOriginalText = submitButton.innerText;
-    submitButton.innerText = 'Сохранение...';
+    popup.setSubmitButtonSavingText(true);
     apiCallback(formData)
     .then(result => {
       thenCallback(formData, result);
       popup.close();
     })
     .catch(err => console.log(err))
-    .finally(submitButton.innerText = submitButtonOriginalText);
+    .finally(() => {popup.setSubmitButtonSavingText(false)});
   }
   return formSubmitCallback;
 }
