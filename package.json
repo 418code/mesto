@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bliss-code/mesto.git"
+    "url": "git+https://github.com/web3flow/mesto.git"
   },
   "keywords": [
     "Yandex",
@@ -22,9 +22,9 @@
   "author": "Maxim Tolstokory",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bliss-code/mesto/issues"
+    "url": "https://github.com/web3flow/mesto/issues"
   },
-  "homepage": "https://github.com/bliss-code/mesto#readme",
+  "homepage": "https://github.com/web3flow/mesto#readme",
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/preset-env": "^7.14.5",
