@@ -2,7 +2,7 @@ const config = {
   popupFormSelector: '.popup__form',
   popupFormInputSelector: '.popup__form-text',
   popupFormSubmitButtonSelector: '.popup__form-submit-btn',
-  popupWithFormSavingText: 'Сохранение...',
+  popupWithFormSavingText: 'Saving...',
   submitButtonDisabled: 'popup__form-submit-btn_disabled',
   transparentMuchMore: ['transparent', 'transparent_amount_much-more'],
   inputFieldError: 'popup__form-text_type_error',

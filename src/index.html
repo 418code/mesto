@@ -1,34 +1,34 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="keywords" content="HTML, CSS, Javascript, адаптивный дизайн">
-  <meta name="description" content="Веб приложение учебный проект программы веб разработки Яндекс Практикума">
-  <meta name="author" content="Максим Толстокорый">
+  <meta name="keywords" content="HTML, CSS, Javascript, responsive design">
+  <meta name="description" content="Web app front end student project Yandex Practicum Russia web development program">
+  <meta name="author" content="Maxim Tolstokory">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Место</title>
+  <title>Mesto</title>
 </head>
 <body class="body">
   <div class="page body__element">
     <header class="header body__element">
-      <img src="<%=require('./images/logo.svg')%>" alt="логотип mesto Russia" class="header__logo">
+      <img src="<%=require('./images/logo.svg')%>" alt="logo mesto Russia" class="header__logo">
     </header>
     <main class="content body__element">
       <section class="profile body__element">
         <div class="profile__pic-info-container">
           <div class="profile__pic-container">
-            <img src="http://" alt="фото аккаунта" class="profile__pic">
+            <img src="http://" alt="account photo" class="profile__pic">
             <button class="profile__avatar-edit-button transparent transparent_amount_much-more"></button>
           </div>
           <div class="profile__info">
             <div class="profile__name-edit-wrap">
               <h1 class="profile__name"></h1>
-              <button class="profile__edit-button transparent transparent_amount_more" type="button" aria-label="Кнопка редактирования профиля"></button>
+              <button class="profile__edit-button transparent transparent_amount_more" type="button" aria-label="Profile edit button"></button>
             </div>
             <p class="profile__description"></p>
           </div>
         </div>
-        <button class="profile__add-button transparent transparent_amount_more" type="button" aria-label="Кнопка добавления карточки места"></button>
+        <button class="profile__add-button transparent transparent_amount_more" type="button" aria-label="Card place add button"></button>
       </section>
       <section class="places body__element">
         <ul class="places__list body__element">
@@ -36,60 +36,60 @@
       </section>
     </main>
     <footer class="footer body__element">
-      <p class="footer__copyright">&copy; 2021 Максим Толстокорый</p>
+      <p class="footer__copyright">&copy; 2021 Maxim Tolstokory</p>
     </footer>
     <div class="popup popup_transparent_medium" id="editProfile">
       <div class="popup__container">
-        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Кнопка закрытия попапа"></button>
+        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Popup close button"></button>
         <form name="editProfile" class="popup__form" novalidate>
-          <h2 class="popup__form-title">Редактировать профиль</h2>
+          <h2 class="popup__form-title">Edit profile</h2>
           <input id="popup__profile-name-input" type="text" name="profileName"
-           class="popup__form-text" placeholder="Жак-Ив Кусто" minlength="2" maxlength="40" required="required">
-          <span class="popup__profile-name-input-error popup__form-text-error">Вы пропустили это поле.</span>
+           class="popup__form-text" placeholder="Jacques Cousteau" minlength="2" maxlength="40" required="required">
+          <span class="popup__profile-name-input-error popup__form-text-error">You've missed this field.</span>
           <input id="popup__profile-description-input" type="text" name="profileDescription"
-           class="popup__form-text" placeholder="Исследователь океана" minlength="2" maxlength="200" required="required">
-          <span class="popup__profile-description-input-error popup__form-text-error">Вы пропустили это поле.</span>
-          <button class="popup__form-submit-btn popup__form-submit-btn_disabled" disabled="disabled" type="submit">Сохранить</button>
+           class="popup__form-text" placeholder="Ocean explorer" minlength="2" maxlength="200" required="required">
+          <span class="popup__profile-description-input-error popup__form-text-error">You've missed this field.</span>
+          <button class="popup__form-submit-btn popup__form-submit-btn_disabled" disabled="disabled" type="submit">Save</button>
         </form>
       </div>
     </div>
     <div class="popup popup_transparent_medium" id="addPlace">
       <div class="popup__container">
-        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Кнопка закрытия попапа"></button>
+        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Popup close button"></button>
         <form name="addPlace" class="popup__form" novalidate>
-          <h2 class="popup__form-title">Новое место</h2>
+          <h2 class="popup__form-title">Add a new place</h2>
           <input id="popup__place-name-input" type="text" name="placeName"
-           class="popup__form-text" placeholder="Название" minlength="2" maxlength="30" required="required">
-          <span class="popup__place-name-input-error popup__form-text-error">Вы пропустили это поле.</span>
-          <input id="popup__place-url-input" type="url" name="placeUrl" class="popup__form-text" placeholder="Ссылка на картинку" required="required">
-          <span class="popup__place-url-input-error popup__form-text-error">Введите адрес сайта.</span>
-          <button class="popup__form-submit-btn popup__form-submit-btn_disabled" disabled="disabled" type="submit">Создать</button>
+           class="popup__form-text" placeholder="Name" minlength="2" maxlength="30" required="required">
+          <span class="popup__place-name-input-error popup__form-text-error">You've missed this field.</span>
+          <input id="popup__place-url-input" type="url" name="placeUrl" class="popup__form-text" placeholder="Image url" required="required">
+          <span class="popup__place-url-input-error popup__form-text-error">Enter site address.</span>
+          <button class="popup__form-submit-btn popup__form-submit-btn_disabled" disabled="disabled" type="submit">Create</button>
         </form>
       </div>
     </div>
     <div class="popup popup_transparent_medium" id="editAvatar">
       <div class="popup__container">
-        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Кнопка закрытия попапа"></button>
+        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Popup close button"></button>
         <form name="editAvatar" class="popup__form" novalidate>
-          <h2 class="popup__form-title">Обновить аватар</h2>
-          <input id="popup__profile-avatar-url-input" type="url" name="avatarUrl" class="popup__form-text" placeholder="Ссылка на аватар" required="required">
-          <span class="popup__profile-avatar-url-input-error popup__form-text-error">Введите адрес аватара.</span>
-          <button class="popup__form-submit-btn popup__form-submit-btn_disabled" disabled="disabled" type="submit">Сохранить</button>
+          <h2 class="popup__form-title">Update avatar</h2>
+          <input id="popup__profile-avatar-url-input" type="url" name="avatarUrl" class="popup__form-text" placeholder="Avatar url" required="required">
+          <span class="popup__profile-avatar-url-input-error popup__form-text-error">Enter avatar address.</span>
+          <button class="popup__form-submit-btn popup__form-submit-btn_disabled" disabled="disabled" type="submit">Save</button>
         </form>
       </div>
     </div>
     <div class="popup popup_transparent_medium" id="confirmDelete">
       <div class="popup__container">
-        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Кнопка закрытия попапа"></button>
+        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Popup close button"></button>
         <form name="confirmDelete" class="popup__form">
-          <h2 class="popup__form-title popup__form-title_onlytitle">Вы уверены?</h2>
-          <button class="popup__form-submit-btn" type="submit">Да</button>
+          <h2 class="popup__form-title popup__form-title_onlytitle">Are you sure?</h2>
+          <button class="popup__form-submit-btn" type="submit">Yes</button>
         </form>
       </div>
     </div>
     <div class="popup popup_transparent_slightly" id="showPhoto">
       <div class="popup__container">
-        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Кнопка закрытия попапа"></button>
+        <button class="popup__container-close-btn transparent transparent_amount_more" type="button" aria-label="Popup close button"></button>
         <img src="#" alt="#" class="popup__photo">
         <p class="popup__photo-description"></p>
       </div>
@@ -97,10 +97,10 @@
   </div>
   <template id="placeCardTemplate">
     <li class="place">
-      <button class="place__remove-btn transparent transparent_amount_more" type="button" aria-label="Кнопка удаления карточки места"></button>
+      <button class="place__remove-btn transparent transparent_amount_more" type="button" aria-label="Place card delete button"></button>
       <img src="#" alt="#" class="place__photo flip">
       <h2 class="place__name"></h2>
-      <button class="place__like-btn transparent transparent_amount_less" type="button" aria-label="Кнопка лайк сердечко карточки места"></button>
+      <button class="place__like-btn transparent transparent_amount_less" type="button" aria-label="Place card like heart button"></button>
       <p class="place__number-of-likes"></p>
     </li>
   </template>
