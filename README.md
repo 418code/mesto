@@ -1,6 +1,6 @@
 # Project Mesto (The Place) - Yandex Practicum web development program
 
-[Demo @ github pages](https://web3flow.github.io/mesto/)
+[Demo @ github pages](https://418code.github.io/mesto/)
 
 [По-русски](./README-RU.md)
 
@@ -61,7 +61,7 @@ BEM
 - CSS classes organized according to Block Element Modifier system
 - files organized with BEM nested file structure
 - CSS files imported from BEM folders with @import
-- [DIY bash script for dealing with nested BEM file structure](https://github.com/web3flow/instruments)
+- [DIY bash script for dealing with nested BEM file structure](https://github.com/418code/instruments)
 
 Git
 - gitflow workflow

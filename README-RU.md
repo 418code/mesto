@@ -1,6 +1,6 @@
 # Проект Mesto - Яндекс Практикум факультет веб разработки
 
-[Демо @ github pages](https://web3flow.github.io/mesto/)
+[Демо @ github pages](https://418code.github.io/mesto/)
 
 [English](./README.md)
 
@@ -62,7 +62,7 @@ Figma
 - CSS классы организованы согласно системе Блок Элемент Модификатор
 - файлы организованы с помощью вложенной файловой структуры БЭМ
 - CSS файлы импортированы из БЭМ папок с помощью @import
-- [самодельный bash script для работы с БЭМ вложенной файловой структурой](https://github.com/web3flow/instruments)
+- [самодельный bash script для работы с БЭМ вложенной файловой структурой](https://github.com/418code/instruments)
 
 Git
 - модель ветвления gitflow
